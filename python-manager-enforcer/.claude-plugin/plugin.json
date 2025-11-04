@@ -1,0 +1,23 @@
+{
+  "name": "python-manager-enforcer",
+  "version": "1.0.0",
+  "description": "Enforces package manager usage by blocking direct python/python3 when a manager is detected and suggesting the correct alternative",
+  "author": {
+    "name": "and3r817",
+    "url": "https://github.com/and3r817"
+  },
+  "license": "MIT",
+  "keywords": [
+    "python",
+    "package-manager",
+    "poetry",
+    "uv",
+    "rye",
+    "pdm",
+    "hatch",
+    "pixi",
+    "conda",
+    "enforcement"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
