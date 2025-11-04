@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": {
+          "tool": "Bash"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/enforce.sh",
+            "timeout": 1,
+            "description": "Enforces modern CLI tools (rg, fd, bat, eza) over legacy commands (grep, find, cat, ls)"
+          }
+        ]
+      }
+    ]
+  }
+}

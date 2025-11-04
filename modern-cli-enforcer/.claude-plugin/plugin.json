@@ -1,0 +1,18 @@
+{
+  "name": "modern-cli-enforcer",
+  "version": "1.0.0",
+  "description": "Enforces modern CLI tools (rg, fd, bat, eza) over legacy commands (grep, find, cat, ls)",
+  "author": {
+    "name": "and3r817",
+    "url": "https://github.com/and3r817"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cli",
+    "tools",
+    "performance",
+    "best-practices",
+    "modern"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
