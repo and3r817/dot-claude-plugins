@@ -1,0 +1,18 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": {
+          "tool": "Bash"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 1,
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/enforce.py"
+          }
+        ]
+      }
+    ]
+  }
+}
