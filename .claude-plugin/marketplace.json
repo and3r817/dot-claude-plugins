@@ -10,10 +10,10 @@
   },
   "plugins": [
     {
-      "name": "date-injector",
-      "source": "./date-injector",
-      "description": "Automatically injects current date into every user prompt as system context",
-      "tags": ["date", "context", "temporal", "automation", "hooks"]
+      "name": "github-write-guard",
+      "source": "./github-write-guard",
+      "description": "Blocks GitHub CLI write operations while allowing read-only commands",
+      "tags": ["security", "github", "git", "safety", "hooks"]
     },
     {
       "name": "native-timeout-enforcer",
