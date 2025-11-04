@@ -2,10 +2,12 @@
 # Native timeout enforcer validation script
 # Blocks bash commands using timeout/gtimeout and suggests native timeout parameter
 
-set -e
+set -euo pipefail
 
-# Extract command from PreToolUse event
-COMMAND="$COMMAND"
+# Extract command from PreToolUse event stdin
+INPUT=$(cat)
+# Support both documented format (.tool_input.command) and legacy formats
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // .toolInput.command // .input.command // empty' 2>/dev/null || echo "")
 
 if [ -z "$COMMAND" ]; then
   exit 0
@@ -41,7 +43,7 @@ if echo "$COMMAND" | grep -qE "^\s*(timeout|gtimeout)\s+"; then
   echo "" >&2
   echo "Note: timeout values are in milliseconds (5s = 5000ms)" >&2
   echo "" >&2
-  exit 1
+  exit 2
 fi
 
 # Pattern 2: timeout/gtimeout in command chains (&&, ||, ;)
@@ -57,7 +59,7 @@ if echo "$COMMAND" | grep -qE "(&&|\|\||;)\s*(timeout|gtimeout)\s+"; then
   echo "   2. Use timeout parameter on the Bash call that needs it" >&2
   echo "   Example: Bash tool with timeout=5000" >&2
   echo "" >&2
-  exit 1
+  exit 2
 fi
 
 # Pattern 3: timeout/gtimeout in pipes
@@ -72,7 +74,7 @@ if echo "$COMMAND" | grep -qE "\|\s*(timeout|gtimeout)\s+|^(timeout|gtimeout)\s+
   echo "   Apply timeout parameter to the entire Bash tool call" >&2
   echo "   Example: Bash tool with timeout=5000" >&2
   echo "" >&2
-  exit 1
+  exit 2
 fi
 
 # All checks passed
