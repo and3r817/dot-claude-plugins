@@ -8,9 +8,9 @@ set -euo pipefail
 # Read hook input from stdin
 INPUT=$(cat)
 
-# Extract tool name and command
-TOOL_NAME=$(echo "$INPUT" | jq -r '.toolName // empty')
-COMMAND=$(echo "$INPUT" | jq -r '.toolInput.command // empty')
+# Extract tool name and command (support both formats)
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // .toolName // empty')
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // .toolInput.command // .input.command // empty')
 
 # Only check Bash tool with gh commands
 if [[ "$TOOL_NAME" != "Bash" ]] || [[ ! "$COMMAND" =~ ^gh ]]; then
@@ -132,26 +132,22 @@ block_command() {
 
     log_blocked "$COMMAND"
 
-    local message="🛡️ **GitHub Write Guard: Command Blocked**\n\n"
-    message+="**Command:** \`$cmd_type\`\n\n"
-    message+="**Reason:** This is a write operation that modifies GitHub resources.\n\n"
-    message+="**Allowed:** Read-only commands (view, list, status, clone, etc.)\n\n"
+    local message="🛡️ GitHub Write Guard: Command Blocked\n\n"
+    message+="Command: $cmd_type\n\n"
+    message+="Reason: This is a write operation that modifies GitHub resources.\n\n"
+    message+="Allowed: Read-only commands (view, list, status, clone, etc.)\n\n"
 
     if [[ -n "$suggestion" ]]; then
-        message+="**Tip:** $suggestion\n\n"
+        message+="Tip: $suggestion\n\n"
     fi
 
-    message+="**Need to make changes?**\n"
+    message+="Need to make changes?\n"
     message+="- Ask the user for explicit permission first\n"
-    message+="- Run \`/gh-guard-disable\` to temporarily disable protection\n"
-    message+="- Add exception to settings: \`allowedWriteCommands\`"
+    message+="- Run /gh-guard-disable to temporarily disable protection\n"
+    message+="- Add exception to settings: allowedWriteCommands"
 
-    cat << EOF
-{
-  "approved": false,
-  "systemMessage": "$message"
-}
-EOF
+    echo -e "$message" >&2
+    exit 2
 }
 
 # Check for gh api with write methods
@@ -168,7 +164,6 @@ if [[ "$COMMAND" =~ ^gh[[:space:]]+api ]]; then
             fi
 
             block_command "gh api $method request" "Use GET for read-only operations: gh api -X GET <endpoint>"
-            exit 0
         fi
     done
 
@@ -188,7 +183,6 @@ if [[ "$COMMAND" =~ ^gh[[:space:]]+api ]]; then
             fi
 
             block_command "gh api with parameters (defaults to POST)" "Add -X GET to use parameters with GET: gh api -X GET <endpoint> -f param=value"
-            exit 0
         fi
     fi
 
@@ -207,7 +201,6 @@ for write_cmd in "${WRITE_COMMANDS[@]}"; do
 
         cmd_name=$(echo "$write_cmd" | sed 's/gh //')
         block_command "gh $cmd_name" "Use 'gh ${cmd_name%% *} view' or 'gh ${cmd_name%% *} list' for read-only access"
-        exit 0
     fi
 done
 
