@@ -1,4 +1,4 @@
-# My Claude Code Plugins
+# Claude Code Plugins
 
 A small collection of plugins I use with Claude Code.
 

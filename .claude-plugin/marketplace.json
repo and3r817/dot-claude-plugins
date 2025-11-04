@@ -1,22 +1,31 @@
 {
   "name": "dot-claude-plugins",
-  "description": "Production-ready Claude Code plugins for hooks, automation, and workflow enhancement - from the Claude Code Skills Factory",
-  "url": "https://github.com/and3r817/dot-claude-plugins",
-  "plugins": {
-    "date-injector": {
-      "path": "./date-injector",
+  "owner": {
+    "name": "and3r817"
+  },
+  "metadata": {
+    "description": "Production-ready Claude Code plugins for hooks, automation, and workflow enhancement - from the Claude Code Skills Factory",
+    "version": "1.0.0",
+    "homepage": "https://github.com/and3r817/dot-claude-plugins"
+  },
+  "plugins": [
+    {
+      "name": "date-injector",
+      "source": "./date-injector",
       "description": "Automatically injects current date into every user prompt as system context",
       "tags": ["date", "context", "temporal", "automation", "hooks"]
     },
-    "native-timeout-enforcer": {
-      "path": "./native-timeout-enforcer",
+    {
+      "name": "native-timeout-enforcer",
+      "source": "./native-timeout-enforcer",
       "description": "Enforces use of Claude Code's native timeout parameter instead of external timeout commands",
       "tags": ["timeout", "validation", "bash", "quality", "best-practices"]
     },
-    "python-manager-enforcer": {
-      "path": "./python-manager-enforcer",
+    {
+      "name": "python-manager-enforcer",
+      "source": "./python-manager-enforcer",
       "description": "Enforces package manager usage in Python projects by blocking direct python/python3 commands",
       "tags": ["python", "package-manager", "poetry", "uv", "rye", "pdm", "enforcement"]
     }
-  }
+  ]
 }
