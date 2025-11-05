@@ -16,7 +16,7 @@ Prevents use of timeout/gtimeout in Bash; use the Bash tool’s native timeout p
 
 Examples:
 - Blocked: `timeout 5 python long_script.py`
-- Recommended: Bash tool with `command=python long_script.py` and `timeout=5000`
+- Recommended: `Bash(command="python long_script.py", timeout=5000)`
 
 ## Files
 

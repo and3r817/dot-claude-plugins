@@ -8,7 +8,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/enforce.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/enforce.py",
             "timeout": 1,
             "description": "Enforces modern CLI tools (rg, fd, bat, eza) over legacy commands (grep, find, cat, ls)"
           }
