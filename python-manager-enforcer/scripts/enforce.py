@@ -5,9 +5,9 @@ Blocks direct python/python3 commands when a package manager is detected.
 """
 
 import json
-import sys
 import os
 import re
+import sys
 from pathlib import Path
 
 
@@ -150,32 +150,7 @@ def main():
 
         suggested = suggest_replacement(command, manager)
 
-        error_message = f"""⚠️  Blocked: Direct python/python3 usage detected!
-
-This project uses {manager}. Please use the managed environment:
-
-Original command:
-  {command}
-
-Suggested command:
-  {suggested}
-
-Example replacements:
-  poetry run python ...      # Poetry projects
-  uv run python ...          # UV projects
-  pdm run python ...         # PDM projects
-  hatch run python ...       # Hatch projects
-  rye run python ...         # Rye projects
-  pixi run python ...        # Pixi projects
-  conda run -n <env> python  # Conda/Mamba projects
-
-This ensures you're using the project's dependencies and Python version.
-
-To bootstrap package managers, use:
-  python3 -m {manager} ...
-"""
-
-        sys.stderr.write(error_message)
+        sys.stderr.write(f"❌ Direct python blocked. Project uses {manager}: {suggested}")
         sys.exit(2)
 
     except Exception as e:
