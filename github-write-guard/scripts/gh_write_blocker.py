@@ -32,13 +32,15 @@ def load_settings():
     return {}
 
 def has_method_flag(cmd: str, method: str) -> bool:
-    """Check for HTTP method flag (optimized string search)"""
-    # Fast path: check common patterns without regex
-    return any(pattern in cmd for pattern in [
-        f'-X {method}',
-        f'-X{method}',
-        f'--method {method}',
-        f'--method={method}'
+    """Check for HTTP method flag (optimized string search) - case insensitive for security"""
+    # Fast path: check common patterns without regex (case insensitive)
+    cmd_lower = cmd.lower()
+    method_lower = method.lower()
+    return any(pattern in cmd_lower for pattern in [
+        f'-x {method_lower}',
+        f'-x{method_lower}',
+        f'--method {method_lower}',
+        f'--method={method_lower}'
     ])
 
 def has_field_flag(cmd: str) -> bool:

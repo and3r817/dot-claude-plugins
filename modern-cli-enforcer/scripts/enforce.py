@@ -5,10 +5,17 @@ import sys
 import shutil
 
 def has_command_word(cmd: str, word: str) -> bool:
-    """Check if command contains word as standalone token (fast alternative to \b regex)"""
-    # Split on common shell delimiters
-    tokens = cmd.replace('|', ' ').replace('&&', ' ').replace('||', ' ').replace(';', ' ').split()
-    return word in tokens
+    """Check if word appears as a command (not as an argument)"""
+    # Split command into segments by shell operators
+    for delimiter in ['|', '&&', '||', ';']:
+        cmd = cmd.replace(delimiter, '\n')
+
+    # Check first token of each segment
+    for segment in cmd.split('\n'):
+        tokens = segment.strip().split()
+        if tokens and tokens[0] == word:
+            return True
+    return False
 
 def main():
     try:
