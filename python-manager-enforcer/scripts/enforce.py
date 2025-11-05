@@ -132,7 +132,7 @@ def main():
         except json.JSONDecodeError:
             sys.exit(0)
 
-        command = event_data.get("input", {}).get("command", "")
+        command = event_data.get("tool_input", {}).get("command", "")
         if not command:
             sys.exit(0)
 
