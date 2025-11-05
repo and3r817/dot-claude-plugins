@@ -55,17 +55,8 @@ def main():
             duration, actual = parse_duration(cmd)
             ms = to_ms(duration)
 
-            sys.stderr.write(f"""
-BLOCKED: Direct timeout usage detected
-
-Your command: {cmd}
-Reason: Use Bash tool native timeout parameter instead
-
-Correct usage:
-   Bash(command="{actual}", timeout={ms})
-
-Note: timeout values are in milliseconds (5s = 5000ms)
-
+            sys.stderr.write(f"""⚠️ Direct timeout blocked
+Use Bash timeout parameter: Bash(command="{actual}", timeout={ms})
 """)
             sys.exit(2)
 
@@ -73,17 +64,8 @@ Note: timeout values are in milliseconds (5s = 5000ms)
         if ' timeout ' in cmd or ' gtimeout ' in cmd:
             # Quick check before expensive operations
             if any(sep in cmd for sep in ('&&', '||', ';', '|')):
-                sys.stderr.write(f"""
-BLOCKED: timeout in command chain detected
-
-Your command: {cmd}
-Reason: Use Bash tool native timeout parameter instead
-
-Correct approach:
-   1. Split commands into separate Bash calls
-   2. Use timeout parameter on the Bash call that needs it
-   Example: Bash(command="your_command", timeout=5000)
-
+                sys.stderr.write(f"""⚠️ Timeout in command chain blocked
+Split into separate Bash calls with timeout parameter
 """)
                 sys.exit(2)
 
