@@ -16,6 +16,12 @@
       "tags": ["security", "github", "git", "safety", "hooks"]
     },
     {
+      "name": "modern-cli-enforcer",
+      "source": "./modern-cli-enforcer",
+      "description": "Enforces modern CLI tools (rg, fd, bat, eza) over legacy commands (grep, find, cat, ls)",
+      "tags": ["cli", "tools", "performance", "best-practices", "modern"]
+    },
+    {
       "name": "native-timeout-enforcer",
       "source": "./native-timeout-enforcer",
       "description": "Enforces use of Claude Code's native timeout parameter instead of external timeout commands",
