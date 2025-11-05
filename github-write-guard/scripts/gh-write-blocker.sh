@@ -8,9 +8,9 @@ set -euo pipefail
 # Read hook input from stdin
 INPUT=$(cat)
 
-# Extract tool name and command (support both formats)
-TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // .toolName // empty')
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // .toolInput.command // .input.command // empty')
+# Extract tool name and command
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty')
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 
 # Only check Bash tool with gh commands
 if [[ "$TOOL_NAME" != "Bash" ]] || [[ ! "$COMMAND" =~ ^gh ]]; then

@@ -5,8 +5,8 @@
 
 set -euo pipefail
 
-# Read command from stdin using proven pattern (with error handling for invalid JSON)
-cmd=$(jq -r '.tool_input.command // .input.command // ""' 2>/dev/null || echo "")
+# Read command from stdin
+cmd=$(jq -r '.tool_input.command // ""' 2>/dev/null || echo "")
 
 # If no command, allow execution
 if [ -z "$cmd" ]; then

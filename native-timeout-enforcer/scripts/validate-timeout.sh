@@ -6,8 +6,7 @@ set -euo pipefail
 
 # Extract command from PreToolUse event stdin
 INPUT=$(cat)
-# Support both documented format (.tool_input.command) and legacy formats
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // .toolInput.command // .input.command // empty' 2>/dev/null || echo "")
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null || echo "")
 
 if [ -z "$COMMAND" ]; then
   exit 0
