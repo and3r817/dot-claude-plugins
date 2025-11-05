@@ -8,7 +8,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/validate-timeout.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/validate_timeout.py",
             "timeout": 1,
             "description": "Blocks Bash commands using timeout/gtimeout and suggests native timeout parameter"
           }

@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""GitHub Write Guard - Blocks gh write operations"""
+import json
+import sys
+from pathlib import Path
+
+WRITE_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE']
+WRITE_CMDS = [
+    'gh repo create', 'gh repo delete', 'gh repo fork', 'gh repo rename', 'gh repo archive',
+    'gh issue create', 'gh issue edit', 'gh issue close', 'gh issue delete',
+    'gh issue pin', 'gh issue unpin', 'gh issue transfer',
+    'gh pr create', 'gh pr edit', 'gh pr close', 'gh pr merge', 'gh pr reopen',
+    'gh pr ready', 'gh pr comment', 'gh pr review',
+    'gh release create', 'gh release delete', 'gh release edit', 'gh release upload',
+    'gh run cancel', 'gh run rerun',
+    'gh workflow enable', 'gh workflow disable', 'gh workflow run',
+    'gh gist create', 'gh gist edit', 'gh gist delete',
+    'gh project create', 'gh project edit', 'gh project delete',
+    'gh project item-add', 'gh project item-edit', 'gh project item-delete',
+    'gh project field-create', 'gh project field-delete'
+]
+
+def load_settings():
+    """Load minimal settings"""
+    try:
+        settings_file = Path.home() / '.claude' / 'settings.json'
+        if settings_file.exists():
+            with open(settings_file) as f:
+                return json.load(f).get('githubWriteGuard', {})
+    except Exception:
+        pass
+    return {}
+
+def has_method_flag(cmd: str, method: str) -> bool:
+    """Check for HTTP method flag (optimized string search)"""
+    # Fast path: check common patterns without regex
+    return any(pattern in cmd for pattern in [
+        f'-X {method}',
+        f'-X{method}',
+        f'--method {method}',
+        f'--method={method}'
+    ])
+
+def has_field_flag(cmd: str) -> bool:
+    """Check for field flags that trigger POST (NO REGEX)"""
+    tokens = cmd.split()
+    for token in tokens:
+        if token in ('-f', '-F', '--field', '--raw-field'):
+            return True
+        if token.startswith('-f') or token.startswith('-F'):
+            return True  # -fname or -Fname
+    return False
+
+def has_get_method(cmd: str) -> bool:
+    """Check if explicitly using GET method"""
+    return any(pattern in cmd for pattern in [
+        '-X GET',
+        '--method GET',
+        '--method=GET'
+    ])
+
+def main():
+    try:
+        data = json.load(sys.stdin)
+        tool = data.get('tool_name', '')
+        cmd = data.get('tool_input', {}).get('command', '')
+
+        # Only check Bash + gh commands (NO REGEX)
+        if tool != 'Bash' or not cmd.startswith('gh '):
+            sys.exit(0)
+
+        settings = load_settings()
+        if not settings.get('enabled', True):
+            sys.exit(0)
+
+        # Check gh api write methods
+        tokens = cmd.split()
+        if len(tokens) >= 2 and tokens[0] == 'gh' and tokens[1] == 'api':
+            for method in WRITE_METHODS:
+                if has_method_flag(cmd, method):
+                    sys.stderr.write(f"""🛡️ GitHub Write Guard: Command Blocked
+
+Command: gh api {method} request
+
+Reason: This is a write operation that modifies GitHub resources.
+
+Allowed: Read-only commands (view, list, status, clone, etc.)
+
+Tip: Use GET for read-only operations: gh api -X GET <endpoint>
+
+Need to make changes?
+- Ask the user for explicit permission first
+- Run /gh-guard-disable to temporarily disable protection
+- Add exception to settings: allowedWriteCommands
+""")
+                    sys.exit(2)
+
+            # Check implicit POST via -f flag
+            if has_field_flag(cmd) and not has_get_method(cmd):
+                sys.stderr.write("""🛡️ GitHub Write Guard: Command Blocked
+
+Command: gh api with parameters (defaults to POST)
+
+Reason: This is a write operation that modifies GitHub resources.
+
+Allowed: Read-only commands (view, list, status, clone, etc.)
+
+Tip: Add -X GET to use parameters with GET: gh api -X GET <endpoint> -f param=value
+
+Need to make changes?
+- Ask the user for explicit permission first
+- Run /gh-guard-disable to temporarily disable protection
+- Add exception to settings: allowedWriteCommands
+""")
+                sys.exit(2)
+
+        # Check write commands
+        for write_cmd in WRITE_CMDS:
+            if cmd.startswith(write_cmd):
+                cmd_name = write_cmd.replace('gh ', '')
+                base_cmd = cmd_name.split()[0]
+                sys.stderr.write(f"""🛡️ GitHub Write Guard: Command Blocked
+
+Command: gh {cmd_name}
+
+Reason: This is a write operation that modifies GitHub resources.
+
+Allowed: Read-only commands (view, list, status, clone, etc.)
+
+Tip: Use 'gh {base_cmd} view' or 'gh {base_cmd} list' for read-only access
+
+Need to make changes?
+- Ask the user for explicit permission first
+- Run /gh-guard-disable to temporarily disable protection
+- Add exception to settings: allowedWriteCommands
+""")
+                sys.exit(2)
+
+        # Command is safe (read-only), allow it
+        sys.exit(0)
+
+    except Exception:
+        sys.exit(0)
+
+if __name__ == "__main__":
+    main()

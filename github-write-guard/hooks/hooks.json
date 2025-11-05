@@ -8,7 +8,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/gh-write-blocker.sh",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/gh_write_blocker.py",
             "timeout": 1,
             "description": "Blocks GitHub CLI write operations while allowing read-only commands"
           }
