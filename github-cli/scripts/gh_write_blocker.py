@@ -20,6 +20,7 @@ WRITE_CMDS = [
     'gh project field-create', 'gh project field-delete'
 ]
 
+
 def load_settings():
     """Load minimal settings"""
     try:
@@ -30,6 +31,7 @@ def load_settings():
     except Exception:
         pass
     return {}
+
 
 def has_method_flag(cmd: str, method: str) -> bool:
     """Check for HTTP method flag (optimized string search) - case insensitive for security"""
@@ -43,6 +45,7 @@ def has_method_flag(cmd: str, method: str) -> bool:
         f'--method={method_lower}'
     ])
 
+
 def has_field_flag(cmd: str) -> bool:
     """Check for field flags that trigger POST (NO REGEX)"""
     tokens = cmd.split()
@@ -53,6 +56,7 @@ def has_field_flag(cmd: str) -> bool:
             return True  # -fname or -Fname
     return False
 
+
 def has_get_method(cmd: str) -> bool:
     """Check if explicitly using GET method"""
     return any(pattern in cmd for pattern in [
@@ -60,6 +64,7 @@ def has_get_method(cmd: str) -> bool:
         '--method GET',
         '--method=GET'
     ])
+
 
 def main():
     try:
@@ -80,62 +85,19 @@ def main():
         if len(tokens) >= 2 and tokens[0] == 'gh' and tokens[1] == 'api':
             for method in WRITE_METHODS:
                 if has_method_flag(cmd, method):
-                    sys.stderr.write(f"""🛡️ GitHub Write Guard: Command Blocked
-
-Command: gh api {method} request
-
-Reason: This is a write operation that modifies GitHub resources.
-
-Allowed: Read-only commands (view, list, status, clone, etc.)
-
-Tip: Use GET for read-only operations: gh api -X GET <endpoint>
-
-Need to make changes?
-- Ask the user for explicit permission first
-- Run /gh-guard-disable to temporarily disable protection
-- Add exception to settings: allowedWriteCommands
-""")
+                    sys.stderr.write(f"❌ GitHub write blocked: gh api {method}")
                     sys.exit(2)
 
             # Check implicit POST via -f flag
             if has_field_flag(cmd) and not has_get_method(cmd):
-                sys.stderr.write("""🛡️ GitHub Write Guard: Command Blocked
-
-Command: gh api with parameters (defaults to POST)
-
-Reason: This is a write operation that modifies GitHub resources.
-
-Allowed: Read-only commands (view, list, status, clone, etc.)
-
-Tip: Add -X GET to use parameters with GET: gh api -X GET <endpoint> -f param=value
-
-Need to make changes?
-- Ask the user for explicit permission first
-- Run /gh-guard-disable to temporarily disable protection
-- Add exception to settings: allowedWriteCommands
-""")
+                sys.stderr.write("❌ GitHub write blocked: gh api with -f/-F flags (defaults to POST)")
                 sys.exit(2)
 
         # Check write commands
         for write_cmd in WRITE_CMDS:
             if cmd.startswith(write_cmd):
                 cmd_name = write_cmd.replace('gh ', '')
-                base_cmd = cmd_name.split()[0]
-                sys.stderr.write(f"""🛡️ GitHub Write Guard: Command Blocked
-
-Command: gh {cmd_name}
-
-Reason: This is a write operation that modifies GitHub resources.
-
-Allowed: Read-only commands (view, list, status, clone, etc.)
-
-Tip: Use 'gh {base_cmd} view' or 'gh {base_cmd} list' for read-only access
-
-Need to make changes?
-- Ask the user for explicit permission first
-- Run /gh-guard-disable to temporarily disable protection
-- Add exception to settings: allowedWriteCommands
-""")
+                sys.stderr.write(f"❌ GitHub write blocked: gh {cmd_name}")
                 sys.exit(2)
 
         # Command is safe (read-only), allow it
@@ -143,6 +105,7 @@ Need to make changes?
 
     except Exception:
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

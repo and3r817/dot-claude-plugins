@@ -1,14 +1,14 @@
 ---
-description: Check GitHub Write Guard status and recent blocked attempts
+description: Check GitHub CLI guard status and recent blocked attempts
 allowed-tools: Read, Bash(bat:*), Bash(cat:*), Bash(wc:*), Bash(tail:*)
 ---
 
-Check the GitHub Write Guard status and show recent activity.
+Check the GitHub CLI security guard status and show recent activity.
 
 **Tasks:**
 
-1. Read `~/.claude/settings.json` and check `githubWriteGuard.enabled` status
-2. If the log file exists at `~/.claude/logs/gh-write-guard.log`, analyze it:
+1. Read `~/.claude/settings.json` and check `githubCli.enabled` status
+2. If the log file exists at `~/.claude/logs/gh-cli.log`, analyze it:
 
 - Count total blocked attempts
 - Show last 5 blocked commands
@@ -18,7 +18,7 @@ Check the GitHub Write Guard status and show recent activity.
 **Output format:**
 
 ```
-🛡️ GitHub Write Guard Status
+🛡️ GitHub CLI Security Guard Status
 
 Status: [ENABLED/DISABLED]
 Logging: [ENABLED/DISABLED]
@@ -33,6 +33,6 @@ Statistics:
 - Total blocks all time: X
 
 Configuration:
-- Log path: ~/.claude/logs/gh-write-guard.log
+- Log path: ~/.claude/logs/gh-cli.log
 - Notifications: [ENABLED/DISABLED]
 ```

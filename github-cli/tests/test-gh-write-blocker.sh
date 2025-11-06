@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Test Suite for github-write-guard
+# Test Suite for github-cli
 # Tests the gh_write_blocker.py hook script
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOOK_SCRIPT="$SCRIPT_DIR/../scripts/gh_write_blocker.py"
 
-print_section "GitHub Write Guard Tests"
+print_section "GitHub CLI Security Guard Tests"
 
 # Test 1: Allow non-gh commands
 print_section "Test: Allow Non-GH Commands"

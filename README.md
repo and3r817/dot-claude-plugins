@@ -10,9 +10,9 @@ A small collection of plugins I use with Claude Code.
 
 ## Plugins
 
-- [github-write-guard](./github-write-guard/README.md) – Blocks GitHub CLI write operations; allows read-only.
+- [github-cli](./github-cli/README.md) – GitHub CLI (gh) companion: security guard blocking write operations + comprehensive usage skill for automation, API access, and workflows.
 
-- [native-timeout-enforcer](./native-timeout-enforcer/README.md) – Prevents use of timeout/gtimeout in Bash; use the Bash tool’s native timeout parameter instead.
+- [native-timeout-enforcer](./native-timeout-enforcer/README.md) – Prevents use of timeout/gtimeout in Bash; use the Bash tool's native timeout parameter instead.
 
 - [python-manager-enforcer](./python-manager-enforcer/README.md) – Enforces package manager usage by blocking direct python/python3 when a manager is detected and suggesting the correct alternative.
 

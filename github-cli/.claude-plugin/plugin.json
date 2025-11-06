@@ -1,0 +1,17 @@
+{
+  "name": "github-cli",
+  "version": "2.0.0",
+  "description": "GitHub CLI (gh) companion: security guard blocking write operations + comprehensive usage skill for automation, API access, and workflow patterns",
+  "author": { "name": "and3r817", "url": "https://github.com/and3r817" },
+  "license": "MIT",
+  "keywords": ["github", "gh", "cli", "security", "automation", "api", "workflow"],
+  "commands": [
+    "./commands/gh-cli-status.md",
+    "./commands/gh-cli-enable.md",
+    "./commands/gh-cli-disable.md"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "skills": [
+    "./SKILL.md"
+  ]
+}
