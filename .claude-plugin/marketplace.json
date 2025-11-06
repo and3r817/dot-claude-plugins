@@ -10,10 +10,10 @@
   },
   "plugins": [
     {
-      "name": "github-write-guard",
-      "source": "./github-write-guard",
-      "description": "Blocks GitHub CLI write operations while allowing read-only commands",
-      "tags": ["security", "github", "git", "safety", "hooks"]
+      "name": "github-cli",
+      "source": "./github-cli",
+      "description": "GitHub CLI (gh) companion: security guard blocking write operations + comprehensive usage skill for automation, API access, and workflows",
+      "tags": ["github", "gh", "cli", "security", "automation", "api", "workflow", "skill"]
     },
     {
       "name": "modern-cli-enforcer",

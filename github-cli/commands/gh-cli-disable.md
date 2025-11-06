@@ -1,5 +1,5 @@
 ---
-description: Disable GitHub Write Guard (allows all gh commands - use with caution)
+description: Disable GitHub CLI security guard (allows all gh commands - use with caution)
 allowed-tools: Read, Edit
 ---
 
@@ -8,13 +8,13 @@ allowed-tools: Read, Edit
 **Tasks:**
 
 1. Read `~/.claude/settings.json`
-2. Set `githubWriteGuard.enabled` to `false`
+2. Set `githubCli.enabled` to `false`
 3. Save the file
 
 **Warning message:**
 
 ```
-⚠️ GitHub Write Guard Disabled
+⚠️ GitHub CLI Security Guard Disabled
 
 WARNING: All GitHub CLI write operations are now ALLOWED, including:
 - gh api POST/PUT/PATCH/DELETE
@@ -30,8 +30,8 @@ This means I can now:
 ❌ Modify releases
 ❌ Make any GitHub API changes
 
-Re-enable protection with: /gh-guard-enable
-Check status: /gh-guard-status
+Re-enable protection with: /gh-cli-enable
+Check status: /gh-cli-status
 
 Are you sure you want to proceed?
 ```

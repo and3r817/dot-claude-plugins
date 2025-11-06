@@ -1,32 +1,32 @@
 ---
-description: Enable GitHub Write Guard protection (blocks all gh write operations)
+description: Enable GitHub CLI security guard protection (blocks all gh write operations)
 allowed-tools: Read, Edit
 ---
 
-Enable the GitHub Write Guard to block all GitHub CLI write operations.
+Enable the GitHub CLI security guard to block all GitHub CLI write operations.
 
 **Tasks:**
 
 1. Read `~/.claude/settings.json`
-2. If `githubWriteGuard` section doesn't exist, create it:
+2. If `githubCli` section doesn't exist, create it:
    ```json
    {
-     "githubWriteGuard": {
+     "githubCli": {
        "enabled": true,
        "allowedWriteCommands": [],
        "logBlockedAttempts": true,
        "notifyOnBlock": false,
-       "logPath": "~/.claude/logs/gh-write-guard.log"
+       "logPath": "~/.claude/logs/gh-cli.log"
      }
    }
    ```
-3. If it exists, set `githubWriteGuard.enabled` to `true`
+3. If it exists, set `githubCli.enabled` to `true`
 4. Save the file
 
 **Success message:**
 
 ```
-✅ GitHub Write Guard Enabled
+✅ GitHub CLI Security Guard Enabled
 
 Protection is now active. The following will be blocked:
 - gh api POST/PUT/PATCH/DELETE requests
@@ -38,6 +38,6 @@ Protection is now active. The following will be blocked:
 
 Read-only commands (view, list, status) are still allowed.
 
-Disable with: /gh-guard-disable
-Check status: /gh-guard-status
+Disable with: /gh-cli-disable
+Check status: /gh-cli-status
 ```
