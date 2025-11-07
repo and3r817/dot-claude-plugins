@@ -27,24 +27,24 @@ def main():
         if not cmd:
             sys.exit(0)
 
-        # Check available modern tools & detect legacy usage (NO REGEX)
+        # Check available modern tools & detect legacy usage
         blocks = []
         if shutil.which('rg') and has_command_word(cmd, 'grep'):
-            blocks.append(('grep', 'ripgrep (rg)', "grep 'pattern' → rg 'pattern'"))
+            blocks.append(('grep', 'rg'))
 
         if shutil.which('fd') and has_command_word(cmd, 'find'):
-            blocks.append(('find', 'fd', "find . -name '*.txt' → fd '*.txt'"))
+            blocks.append(('find', 'fd'))
 
         if shutil.which('bat') and has_command_word(cmd, 'cat'):
-            blocks.append(('cat', 'bat', 'cat file.py → bat file.py'))
+            blocks.append(('cat', 'bat'))
 
         if shutil.which('eza') and has_command_word(cmd, 'ls'):
-            blocks.append(('ls', 'eza', 'ls -la → eza -la'))
+            blocks.append(('ls', 'eza'))
 
         if blocks:
-            suggestions = '\n'.join(f"{old} → {new}: {ex}" for old, new, ex in blocks)
+            suggestions = '\n'.join(f"USE '{new}' instead '{old}'" for old, new in blocks)
 
-            sys.stderr.write(f"❌ Legacy CLI blocked{suggestions}")
+            sys.stderr.write(f"❌ Legacy CLI blocked.\n{suggestions}")
             sys.exit(2)
 
         sys.exit(0)
