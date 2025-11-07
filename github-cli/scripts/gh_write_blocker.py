@@ -47,7 +47,7 @@ def has_method_flag(cmd: str, method: str) -> bool:
 
 
 def has_field_flag(cmd: str) -> bool:
-    """Check for field flags that trigger POST (NO REGEX)"""
+    """Check for field flags that trigger POST"""
     tokens = cmd.split()
     for token in tokens:
         if token in ('-f', '-F', '--field', '--raw-field'):
@@ -72,7 +72,7 @@ def main():
         tool = data.get('tool_name', '')
         cmd = data.get('tool_input', {}).get('command', '')
 
-        # Only check Bash + gh commands (NO REGEX)
+        # Only check Bash + gh commands
         if tool != 'Bash' or not cmd.startswith('gh '):
             sys.exit(0)
 

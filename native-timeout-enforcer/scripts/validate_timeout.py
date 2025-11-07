@@ -3,6 +3,7 @@
 import json
 import sys
 
+
 def parse_duration(cmd: str) -> tuple[str, str]:
     """Extract duration and command without regex where possible"""
     # Fast path: check if starts with timeout/gtimeout
@@ -30,8 +31,9 @@ def parse_duration(cmd: str) -> tuple[str, str]:
     actual_cmd = ' '.join(tokens[cmd_start_idx:])
     return duration, actual_cmd
 
+
 def to_ms(duration: str) -> str:
-    """Convert duration to milliseconds (NO REGEX)"""
+    """Convert duration to milliseconds"""
     if duration.endswith('s') and duration[:-1].isdigit():
         return str(int(duration[:-1]) * 1000)
     if duration.endswith('m') and duration[:-1].isdigit():
@@ -39,6 +41,7 @@ def to_ms(duration: str) -> str:
     if duration.isdigit():
         return str(int(duration) * 1000)
     return "5000"
+
 
 def main():
     try:
@@ -50,29 +53,28 @@ def main():
 
         cmd_stripped = cmd.strip()
 
-        # Pattern 1: Direct timeout at start (NO REGEX)
+        # Pattern 1: Direct timeout at start
         if cmd_stripped.startswith('timeout ') or cmd_stripped.startswith('gtimeout '):
             duration, actual = parse_duration(cmd)
             ms = to_ms(duration)
 
-            sys.stderr.write(f"""⚠️ Direct timeout blocked
-Use Bash timeout parameter: Bash(command="{actual}", timeout={ms})
-""")
+            sys.stderr.write(
+                f"⚠️ Direct timeout blocked.\nUse Bash timeout parameter: Bash(command=\"{actual}\", timeout={ms})")
             sys.exit(2)
 
         # Pattern 2 & 3: timeout in chains/pipes (minimal string ops)
         if ' timeout ' in cmd or ' gtimeout ' in cmd:
             # Quick check before expensive operations
             if any(sep in cmd for sep in ('&&', '||', ';', '|')):
-                sys.stderr.write(f"""⚠️ Timeout in command chain blocked
-Split into separate Bash calls with timeout parameter
-""")
+                sys.stderr.write(
+                    f"⚠️ Timeout in command chain blocked.\nSplit into separate Bash calls with timeout parameter")
                 sys.exit(2)
 
         sys.exit(0)
 
     except Exception:
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
