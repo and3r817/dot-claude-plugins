@@ -608,7 +608,7 @@ gh help reference               # Complete command reference
 
 ## Legend
 
-- ⚠️ **Write operation** - Blocked by default, requires `/gh-cli-disable`
+- ⚠️ **Write operation** - Blocked by default, requires user permission
 - No marker - Read-only operation, always allowed
 
 ## Common Flags (Most Commands)

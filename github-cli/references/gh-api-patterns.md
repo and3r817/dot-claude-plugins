@@ -280,7 +280,7 @@ gh api -X OPTIONS repos/{owner}/{repo}
 
 ### Write Operations (⚠️ Blocked by Default)
 
-All write methods require `/gh-cli-disable`:
+All write methods require explicit user permission:
 
 ```bash
 # POST - Create resource
@@ -759,7 +759,7 @@ gh api repos/{owner}/{repo} 2>/dev/null || echo '{"name": "unknown"}'
 
 - ⚠️ All POST/PUT/PATCH/DELETE methods are blocked by default
 - ⚠️ Field parameters trigger implicit POST without `-X GET`
-- ⚠️ Always use `/gh-cli-disable` only after user authorization
+- ⚠️ Always ask for user authorization before write operations
 - ✅ GET requests are always safe and allowed
 - ✅ HEAD and OPTIONS methods are safe
 - ✅ Explicit `-X GET` with parameters is allowed

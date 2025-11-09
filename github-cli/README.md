@@ -45,7 +45,7 @@ gh pr list                         # ✅ Allowed
 gh api repos/{owner}/{repo}        # ✅ Allowed (GET)
 ```
 
-### 2. Usage Skill (SKILL.md)
+### 2. Usage Skill
 
 Automatically provides guidance when working with GitHub CLI:
 
@@ -76,40 +76,7 @@ Claude: [Provides gh api examples with REST/GraphQL patterns]
 ## Commands
 
 - `/gh-cli-status` - View current guard status and blocked attempts
-- `/gh-cli-enable` - Enable write protection (default)
-- `/gh-cli-disable` - Temporarily disable write protection
 
-## Authorization Workflow
-
-When write operations are needed:
-
-1. **Claude asks for permission** before attempting write operations
-2. User runs `/gh-cli-disable` to temporarily disable guard
-3. Claude performs authorized write operations
-4. User runs `/gh-cli-enable` to re-enable protection
-
-## Configuration
-
-`~/.claude/settings.json`:
-
-```json
-{
-  "githubCli": {
-    "enabled": true,
-    "allowedWriteCommands": [],
-    "logBlockedAttempts": true,
-    "notifyOnBlock": false,
-    "logPath": "~/.claude/logs/gh-cli.log"
-  }
-}
-```
-
-**Options:**
-- `enabled` - Enable/disable write guard (default: true)
-- `allowedWriteCommands` - Whitelist specific write commands
-- `logBlockedAttempts` - Log blocked attempts to file
-- `notifyOnBlock` - Show notification when command blocked
-- `logPath` - Location of log file
 
 ## Plugin Structure
 
@@ -123,16 +90,16 @@ github-cli/
 ├── scripts/
 │   └── gh_write_blocker.py   # Hook script
 ├── commands/
-│   ├── gh-cli-status.md      # Status command
-│   ├── gh-cli-enable.md      # Enable guard command
-│   └── gh-cli-disable.md     # Disable guard command
+│   └── gh-cli-status.md      # Status command
 ├── references/               # Reference documentation
 │   ├── gh-commands.md        # Complete command catalog
 │   ├── gh-api-patterns.md    # REST/GraphQL API patterns
 │   └── gh-scripting.md       # Automation & scripting guides
+├── skills/
+│   └── github-cli/
+│       └── SKILL.md          # Usage skill with gh patterns
 ├── tests/
 │   └── test-gh-write-blocker.sh  # Test suite
-├── SKILL.md                  # Usage skill with gh patterns
 └── README.md                 # This file
 ```
 
@@ -171,13 +138,13 @@ The skill provides context-aware guidance:
 User: "Create a pull request for my feature branch"
 
 Claude: I'll help you create a pull request. Since this is a write
-operation, I need your permission first.
+operation, the security guard will block it.
 
 To create a PR, you can use:
   gh pr create --title "Feature: X" --body "Description"
   gh pr create --draft  # Create as draft first
 
-Would you like me to create the PR? If so, please run /gh-cli-disable first.
+Would you like me to proceed with creating the PR?
 ```
 
 ### Querying GitHub API (Automatic)
