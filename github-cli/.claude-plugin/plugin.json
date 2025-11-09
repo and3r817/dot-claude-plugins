@@ -6,11 +6,6 @@
   "license": "MIT",
   "keywords": ["github", "gh", "cli", "security", "automation", "api", "workflow"],
   "commands": [
-    "./commands/gh-cli-status.md",
-    "./commands/gh-cli-enable.md",
-    "./commands/gh-cli-disable.md"
-  ],
-  "skills": [
-    "./SKILL.md"
+    "./commands/gh-cli-status.md"
   ]
 }

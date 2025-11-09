@@ -1,17 +1,21 @@
 ---
 name: github-cli
 description: This skill should be used when working with GitHub CLI (gh) for repository management, pull requests, issues, API access, GitHub Actions, or automation workflows. Provides comprehensive guidance on gh command patterns, security considerations, and best practices.
+allowed-tools: Read, Grep, Glob, Bash(gh:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 # GitHub CLI (gh) Usage Skill
 
 ## Purpose
 
-GitHub CLI (`gh`) is the official command-line interface to GitHub, enabling direct interaction with repositories, pull requests, issues, GitHub Actions, and the GitHub API without leaving the terminal. This skill provides systematic guidance for using gh effectively while maintaining security through the integrated write-guard protection.
+GitHub CLI (`gh`) is the official command-line interface to GitHub, enabling direct interaction with repositories, pull
+requests, issues, GitHub Actions, and the GitHub API without leaving the terminal. This skill provides systematic
+guidance for using gh effectively while maintaining security through the integrated write-guard protection.
 
 ## When to Use This Skill
 
 Invoke this skill when:
+
 - Creating or managing pull requests and issues via command line
 - Querying GitHub API (REST or GraphQL) for repository data
 - Automating GitHub workflows and Actions
@@ -76,7 +80,7 @@ gh pr review 123 --approve        # Approve PR
 gh pr review 123 --comment --body "LGTM"
 gh pr checks                      # View status checks
 
-# Merge (⚠️ Write operation - requires guard disable)
+# Merge (⚠️ Write operation - blocked by default)
 gh pr merge 123 --squash          # Squash and merge
 gh pr merge 123 --rebase          # Rebase and merge
 ```
@@ -97,14 +101,15 @@ gh issue list --state closed      # Show closed issues
 gh issue view 456                 # View issue details
 gh issue comment 456 --body "Update"
 
-# Modify (⚠️ Write operations - require guard disable)
+# Modify (⚠️ Write operations - blocked by default)
 gh issue close 456
 gh issue edit 456 --add-label "duplicate"
 ```
 
 ### GitHub API Access
 
-The `gh api` command provides authenticated access to GitHub's REST (v3) and GraphQL (v4) APIs with automatic placeholder substitution for `{owner}`, `{repo}`, and `{branch}`.
+The `gh api` command provides authenticated access to GitHub's REST (v3) and GraphQL (v4) APIs with automatic
+placeholder substitution for `{owner}`, `{repo}`, and `{branch}`.
 
 #### REST API Patterns
 
@@ -168,7 +173,7 @@ POST, PUT, PATCH, DELETE methods are **blocked by default** via the security gua
 # ❌ Blocked - Write operation
 gh api -X POST repos/{owner}/{repo}/issues -f title="New Issue"
 
-# ✅ Requires explicit permission or /gh-cli-disable
+# ✅ Requires explicit user permission
 # User must authorize write operations first
 ```
 
@@ -296,6 +301,7 @@ gh pr checks && gh pr merge --auto || echo "Checks failed"
 This plugin includes a **security guard** that blocks write operations by default:
 
 **Blocked operations:**
+
 - Repository modifications: `gh repo create`, `gh repo delete`, `gh repo archive`
 - PR/Issue changes: `gh pr create`, `gh pr merge`, `gh issue close`, `gh issue edit`
 - Release management: `gh release create`, `gh release delete`
@@ -303,6 +309,7 @@ This plugin includes a **security guard** that blocks write operations by defaul
 - Workflow triggers: `gh workflow run`, `gh run cancel`
 
 **Allowed operations:**
+
 - All read commands: `gh repo view`, `gh pr list`, `gh issue list`
 - API GET requests: `gh api repos/{owner}/{repo}`
 - Search operations: `gh search prs`, `gh search issues`
@@ -312,9 +319,8 @@ This plugin includes a **security guard** that blocks write operations by defaul
 When write operations are needed:
 
 1. **Ask user for explicit permission first**
-2. User runs `/gh-cli-disable` to temporarily disable guard
-3. Perform authorized write operations
-4. User runs `/gh-cli-enable` to re-enable protection
+2. User authorizes the specific write operation
+3. Perform authorized write operations only after confirmation
 
 ### API Method Security
 
@@ -377,6 +383,7 @@ gh issue list --label "needs-triage" --json number,title --jq '.[] | "\(.number)
 ## References
 
 For detailed command references and advanced patterns, see:
+
 - `references/gh-commands.md` - Complete command catalog by category
 - `references/gh-api-patterns.md` - REST/GraphQL examples and authentication
 - `references/gh-scripting.md` - Automation patterns and best practices
@@ -385,25 +392,21 @@ For detailed command references and advanced patterns, see:
 
 ### Settings Location
 
-`~/.claude/settings.json`:
+The security guard can be configured in `~/.claude/settings.json`:
 
 ```json
 {
-  "githubCli": {
-    "enabled": true,
-    "allowedWriteCommands": [],
-    "logBlockedAttempts": true,
-    "notifyOnBlock": false,
-    "logPath": "~/.claude/logs/gh-cli.log"
+  "githubWriteGuard": {
+    "enabled": true
   }
 }
 ```
 
+**Note**: The guard is enabled by default. Set `enabled: false` to disable write protection.
+
 ### Available Commands
 
-- `/gh-cli-status` - View current guard status and blocked attempts
-- `/gh-cli-enable` - Enable write protection (default)
-- `/gh-cli-disable` - Temporarily disable write protection
+- `/gh-cli-status` - View current guard status
 
 ## Environment Variables
 
