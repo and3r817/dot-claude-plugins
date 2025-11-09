@@ -32,6 +32,20 @@
       "source": "./python-manager-enforcer",
       "description": "Enforces package manager usage in Python projects by blocking direct python/python3 commands",
       "tags": ["python", "package-manager", "poetry", "uv", "rye", "pdm", "enforcement"]
+    },
+    {
+      "name": "codex-advisor",
+      "source": "./codex-advisor",
+      "description": "Advisory consultation skill for architectural reviews, design decisions, code analysis, and technology evaluation. Codex provides recommendations without making code changes.",
+      "tags": [
+        "advisory",
+        "architecture",
+        "code-review",
+        "consultation",
+        "design",
+        "codex",
+        "skill"
+      ]
     }
   ]
 }
