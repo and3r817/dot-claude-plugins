@@ -13,6 +13,5 @@
     "bash",
     "quality",
     "best-practices"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }
