@@ -18,6 +18,9 @@ A small collection of plugins I use with Claude Code.
 
 - [python-manager-enforcer](./python-manager-enforcer/README.md) – Enforces package manager usage by blocking direct python/python3 when a manager is detected and suggesting the correct alternative.
 
+- [codex-advisor](./codex-advisor/README.md) – Advisory consultation skill for architectural reviews, design decisions,
+  code analysis, and technology evaluation. Codex provides recommendations without making code changes.
+
 ## Manage
 
 ```bash
