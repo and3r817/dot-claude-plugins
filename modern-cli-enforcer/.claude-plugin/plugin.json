@@ -13,6 +13,5 @@
     "performance",
     "best-practices",
     "modern"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }

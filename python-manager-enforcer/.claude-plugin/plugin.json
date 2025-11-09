@@ -18,6 +18,5 @@
     "pixi",
     "conda",
     "enforcement"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }

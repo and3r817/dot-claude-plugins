@@ -10,7 +10,6 @@
     "./commands/gh-cli-enable.md",
     "./commands/gh-cli-disable.md"
   ],
-  "hooks": "./hooks/hooks.json",
   "skills": [
     "./SKILL.md"
   ]
