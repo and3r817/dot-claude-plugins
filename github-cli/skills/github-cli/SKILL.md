@@ -44,255 +44,52 @@ Authentication automatically stores Git credentials when HTTPS is selected as th
 
 Use `gh` for GitHub platform interactions; use `git` for repository version control.
 
-## Command Categories & Patterns
+## Quick Command Reference
 
-### Repository Management
+### Common Operations
 
+**Repositories:**
 ```bash
-gh repo view OWNER/REPO           # View repository details and README
-gh repo view --web                # Open repository in browser
-gh repo clone OWNER/REPO          # Clone repository locally
-gh repo list OWNER --limit 100    # List organization repositories
-gh repo fork                      # Fork current repository
+gh repo view OWNER/REPO     # View repository details
+gh repo clone OWNER/REPO    # Clone repository
+gh repo list OWNER          # List repositories
 ```
 
-### Pull Request Workflow
-
+**Pull Requests:**
 ```bash
-# Create
-gh pr create --draft --title "Feature: X" --body "Description"
-gh pr create --base main --head feature-branch
-
-# List & Filter
-gh pr list                        # List PRs in current repo
-gh pr list --author "@me"         # PRs authored by authenticated user
-gh pr list --assignee "@me"       # PRs assigned to authenticated user
-gh pr list --label "bug"          # Filter by label
-
-# View & Checkout
-gh pr view 123                    # View PR details
-gh pr view 123 --web              # Open in browser
-gh pr checkout 123                # Check out PR branch locally
-gh pr diff 123                    # View PR diff
-
-# Review & Checks
-gh pr review 123 --approve        # Approve PR
-gh pr review 123 --comment --body "LGTM"
-gh pr checks                      # View status checks
-
-# Merge (⚠️ Write operation - blocked by default)
-gh pr merge 123 --squash          # Squash and merge
-gh pr merge 123 --rebase          # Rebase and merge
+gh pr list                  # List pull requests
+gh pr view 123              # View PR details
+gh pr checkout 123          # Checkout PR branch
+gh pr create --draft        # Create draft PR (⚠️ write operation)
 ```
 
-### Issue Management
-
+**Issues:**
 ```bash
-# Create
-gh issue create --title "Bug: X" --body "Description" --label "bug"
-
-# List & Filter
-gh issue list                     # List all issues
-gh issue list --assignee "@me"    # Assigned to authenticated user
-gh issue list --label "priority"  # Filter by label
-gh issue list --state closed      # Show closed issues
-
-# View & Comment
-gh issue view 456                 # View issue details
-gh issue comment 456 --body "Update"
-
-# Modify (⚠️ Write operations - blocked by default)
-gh issue close 456
-gh issue edit 456 --add-label "duplicate"
+gh issue list               # List issues
+gh issue view 456           # View issue details
+gh issue create             # Create issue (⚠️ write operation)
 ```
 
-### GitHub API Access
-
-The `gh api` command provides authenticated access to GitHub's REST (v3) and GraphQL (v4) APIs with automatic
-placeholder substitution for `{owner}`, `{repo}`, and `{branch}`.
-
-#### REST API Patterns
-
+**GitHub API:**
 ```bash
-# GET (read-only, default method)
-gh api repos/{owner}/{repo}/releases
-gh api /repos/OWNER/REPO/issues
-gh api -X GET repos/{owner}/{repo}/branches
-
-# GET with parameters (explicit method required)
-gh api -X GET repos/{owner}/{repo}/issues -f state=closed -f labels=bug
-
-# Pagination
-gh api --paginate repos/{owner}/{repo}/issues
-
-# JSON filtering with jq
-gh api repos/{owner}/{repo} --jq '.stargazers_count'
-gh api repos/{owner}/{repo}/pulls --jq '.[].title'
-
-# Caching
-gh api --cache 1h repos/{owner}/{repo}/releases
+gh api repos/{owner}/{repo}                    # GET request (read-only)
+gh api -X GET /endpoint -f param=value         # GET with parameters
+gh api --paginate /endpoint                    # Paginated requests
+gh api repos/{owner}/{repo} --jq '.stars'      # JSON filtering with jq
 ```
 
-#### GraphQL Patterns
-
+**Search:**
 ```bash
-# Basic query
-gh api graphql -f query='
-  query {
-    viewer {
-      login
-      name
-    }
-  }
-'
-
-# Pagination with variables
-gh api graphql --paginate -f query='
-  query($endCursor: String) {
-    repository(owner: "OWNER", name: "REPO") {
-      issues(first: 100, after: $endCursor) {
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-        nodes {
-          title
-          number
-        }
-      }
-    }
-  }
-'
+gh search prs --review-requested=@me           # Search PRs
+gh search issues "is:open label:bug"           # Search issues
+gh search code "function name"                 # Search code
 ```
 
-#### ⚠️ API Write Operations
+**For detailed commands, patterns, and examples, see:**
 
-POST, PUT, PATCH, DELETE methods are **blocked by default** via the security guard:
-
-```bash
-# ❌ Blocked - Write operation
-gh api -X POST repos/{owner}/{repo}/issues -f title="New Issue"
-
-# ✅ Requires explicit user permission
-# User must authorize write operations first
-```
-
-Field parameters (`-f`, `-F`, `--field`) trigger implicit POST unless `-X GET` is specified:
-
-```bash
-# ❌ Blocked - Implicit POST
-gh api repos/{owner}/{repo}/issues -f title="Bug"
-
-# ✅ Allowed - Explicit GET
-gh api -X GET repos/{owner}/{repo}/issues -f state=open
-```
-
-### GitHub Actions & Workflows
-
-```bash
-# List workflows
-gh workflow list
-
-# Run workflow (⚠️ Write operation)
-gh workflow run ci.yml
-gh workflow run ci.yml -f environment=production
-
-# View runs
-gh run list --workflow=ci.yml
-gh run view 123456789
-gh run view --log-failed          # Show failed logs
-gh run watch                      # Watch current run
-
-# Manage runs (⚠️ Write operations)
-gh run cancel 123456789
-gh run rerun 123456789
-```
-
-### Releases
-
-```bash
-# List releases
-gh release list
-gh release view v1.0.0
-
-# Download assets
-gh release download v1.0.0
-
-# Create release (⚠️ Write operation)
-gh release create v1.0.0 --title "Release 1.0.0" --notes "Features..."
-gh release create v1.0.0 ./dist/*.tar.gz --generate-notes
-```
-
-### Search Operations
-
-```bash
-# Search PRs
-gh search prs --review-requested=@me --state=open
-gh search prs "is:pr is:open author:USERNAME"
-
-# Search issues
-gh search issues "is:issue is:open label:bug"
-
-# Search code
-gh search code "function calculateTotal"
-
-# Search repositories
-gh search repos "topic:machine-learning language:python"
-```
-
-## Scripting & Automation
-
-### Output Formatting
-
-gh automatically formats output for machine readability when piped:
-
-```bash
-# Human-readable (colored, formatted)
-gh pr list
-
-# Machine-readable (tab-delimited, no colors)
-gh pr list | cut -f1        # Extract PR numbers
-gh pr list --json number,title --jq '.[] | "\(.number): \(.title)"'
-```
-
-### JSON Output & jq Integration
-
-```bash
-# Export as JSON
-gh pr list --json number,title,author,state
-
-# Filter with jq
-gh repo list --json name,description --jq '.[] | select(.description != null)'
-
-# Transform data
-gh api repos/{owner}/{repo}/contributors --jq '[.[] | {name: .login, commits: .contributions}]'
-```
-
-### Aliases for Common Operations
-
-```bash
-# Create aliases
-gh alias set prd "pr create --draft"
-gh alias set pv "pr view --web"
-gh alias set il "issue list --assignee @me"
-
-# Use aliases
-gh prd --title "WIP: Feature"
-gh pv 123
-```
-
-### Composition with Unix Tools
-
-```bash
-# Interactive PR selection with fzf
-gh pr list | fzf | cut -f1 | xargs gh pr checkout
-
-# Bulk operations
-gh issue list --json number --jq '.[].number' | xargs -I {} gh issue close {}
-
-# Conditional logic
-gh pr checks && gh pr merge --auto || echo "Checks failed"
-```
+- `references/gh-commands.md` - Complete command catalog by category
+- `references/gh-api-patterns.md` - REST/GraphQL API examples and authentication
+- `references/gh-scripting.md` - Automation patterns, output formatting, and best practices
 
 ## Security Considerations
 
@@ -337,60 +134,9 @@ gh api /repos/{owner}/{repo}/issues -f title="Bug"
 gh api -X GET /repos/{owner}/{repo}/issues -f state=open -f labels=bug
 ```
 
-## Common Patterns & Best Practices
-
-### Interactive Repository Selection
-
-```bash
-# Select repo interactively
-gh repo list | fzf | cut -f1 | xargs gh repo view
-```
-
-### Bulk PR Status Checks
-
-```bash
-# Check all open PRs
-gh pr list --json number --jq '.[].number' | while read pr; do
-  echo "PR #$pr:"
-  gh pr checks $pr
-done
-```
-
-### Release Automation
-
-```bash
-# Create release from CI/CD
-VERSION="v$(cat VERSION)"
-gh release create "$VERSION" \
-  --title "Release $VERSION" \
-  --generate-notes \
-  ./dist/*
-```
-
-### Team Workflow
-
-```bash
-# Review queue
-gh search prs --review-requested=@me --state=open
-
-# Team PRs
-gh pr list --author team-member
-
-# Label-based workflows
-gh issue list --label "needs-triage" --json number,title --jq '.[] | "\(.number): \(.title)"'
-```
-
-## References
-
-For detailed command references and advanced patterns, see:
-
-- `references/gh-commands.md` - Complete command catalog by category
-- `references/gh-api-patterns.md` - REST/GraphQL examples and authentication
-- `references/gh-scripting.md` - Automation patterns and best practices
+**Note:** Field parameters (`-f`, `-F`, `--field`) trigger implicit POST unless `-X GET` is explicitly specified.
 
 ## Configuration
-
-### Settings Location
 
 The security guard can be configured in `~/.claude/settings.json`:
 
@@ -411,52 +157,42 @@ The security guard can be configured in `~/.claude/settings.json`:
 ## Environment Variables
 
 ```bash
-# Override repository context
-export GH_REPO="owner/repo"
-
-# Use specific GitHub instance
-export GH_HOST="github.example.com"
-
-# Set API token directly (not recommended)
-export GITHUB_TOKEN="ghp_..."
-
-# Configure pager
-export PAGER="less -FX"
+export GH_REPO="owner/repo"              # Override repository context
+export GH_HOST="github.example.com"      # Use specific GitHub instance
+export GITHUB_TOKEN="ghp_..."            # Set API token (not recommended)
+export PAGER="less -FX"                  # Configure pager
 ```
 
 ## Troubleshooting
 
-### Authentication Issues
-
+**Authentication:**
 ```bash
 gh auth status          # Check authentication state
 gh auth refresh         # Refresh expired token
-gh auth logout          # Clear credentials
 gh auth login           # Re-authenticate
 ```
 
-### API Rate Limits
-
+**API Rate Limits:**
 ```bash
-# Check rate limit
-gh api rate_limit
-
-# Use caching to reduce requests
-gh api --cache 1h repos/{owner}/{repo}/releases
+gh api rate_limit                               # Check rate limit
+gh api --cache 1h repos/{owner}/{repo}/releases # Use caching
 ```
 
-### Debug Mode
-
+**Debug Mode:**
 ```bash
-# Verbose output
-gh pr create --title "Test" --verbose
-
-# See HTTP requests
-GH_DEBUG=api gh api repos/{owner}/{repo}
+gh pr create --title "Test" --verbose           # Verbose output
+GH_DEBUG=api gh api repos/{owner}/{repo}        # See HTTP requests
 ```
 
-## Official Documentation
+## References
 
+**Detailed documentation:**
+
+- `references/gh-commands.md` - Complete command catalog by category
+- `references/gh-api-patterns.md` - REST/GraphQL examples and authentication
+- `references/gh-scripting.md` - Automation patterns and best practices
+
+**Official resources:**
 - GitHub CLI Manual: https://cli.github.com/manual/
 - GitHub Docs: https://docs.github.com/en/github-cli
 - Repository: https://github.com/cli/cli
