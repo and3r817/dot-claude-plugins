@@ -1,7 +1,7 @@
 ---
 name: github-cli
 description: This skill should be used when working with GitHub CLI (gh) for repository management, pull requests, issues, API access, GitHub Actions, or automation workflows. Provides comprehensive guidance on gh command patterns, security considerations, and best practices.
-allowed-tools: Read, Grep, Glob, Bash(gh:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
+allowed-tools: Read, Grep, Glob, Bash(gh:*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs, WebSearch, WebFetch
 ---
 
 # GitHub CLI (gh) Usage Skill

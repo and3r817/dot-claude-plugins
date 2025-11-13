@@ -7,6 +7,47 @@ Comprehensive GitHub CLI (`gh`) companion providing both security protection and
 **🛡️ Security Guard** - Blocks write operations by default (POST, PUT, PATCH, DELETE)
 **📚 Usage Skill** - Comprehensive gh CLI guidance for automation, API access, and workflows
 
+## Requirements
+
+**External Tool Required:**
+
+- [GitHub CLI (`gh`)](https://cli.github.com/) - GitHub's official command-line tool
+
+**Install GitHub CLI:**
+
+**macOS:**
+
+```bash
+brew install gh
+```
+
+**Linux:**
+
+```bash
+# Debian/Ubuntu
+sudo apt install gh
+
+# Fedora/CentOS
+sudo dnf install gh
+
+# Arch Linux
+sudo pacman -S github-cli
+```
+
+**Windows:**
+
+```bash
+winget install GitHub.cli
+# or
+scoop install gh
+```
+
+**Verify Installation:**
+
+```bash
+gh --version
+```
+
 ## Install
 
 ```bash
