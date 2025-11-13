@@ -1,12 +1,11 @@
-# Modern CLI Tool Enforcer Hook 🔧
+# Modern CLI Tool Enforcer
 
-**Automatically enforces modern CLI tools over legacy commands in Bash operations.**
+Automatically enforces modern CLI tools over legacy commands in Bash operations.
 
----
+## What It Does
 
-## Overview
-
-This PreToolUse hook intercepts Bash commands and blocks execution when legacy CLI tools are detected, suggesting modern alternatives instead. It only blocks when modern tools are available, falling back silently otherwise.
+**🔧 Enforcer Hook** - Blocks legacy CLI commands when modern alternatives are installed
+**🎯 Smart Fallback** - Silently allows legacy commands when modern tools unavailable
 
 **Supported Replacements**:
 - `grep` → `ripgrep (rg)` - Fast parallel content search
@@ -14,9 +13,70 @@ This PreToolUse hook intercepts Bash commands and blocks execution when legacy C
 - `cat` → `bat` - Syntax highlighting with line numbers
 - `ls` → `eza` - Modern ls with colors and git integration
 
----
+## Requirements
 
-## Why Modern Tools?
+**External Tools (Optional):**
+
+The plugin works without these tools but provides no enforcement. Install any/all for enforcement:
+
+- [ripgrep (`rg`)](https://github.com/BurntSushi/ripgrep) - Replaces `grep`
+- [fd](https://github.com/sharkdp/fd) - Replaces `find`
+- [bat](https://github.com/sharkdp/bat) - Replaces `cat`
+- [eza](https://github.com/eza-community/eza) - Replaces `ls`
+
+**Install Modern Tools:**
+
+**macOS:**
+
+```bash
+brew install ripgrep fd bat eza
+```
+
+**Linux (Debian/Ubuntu):**
+
+```bash
+sudo apt install ripgrep fd-find bat
+cargo install eza
+```
+
+**Linux (Fedora/CentOS):**
+
+```bash
+sudo dnf install ripgrep fd-find bat
+cargo install eza
+```
+
+**Linux (Arch):**
+
+```bash
+sudo pacman -S ripgrep fd bat eza
+```
+
+**Via Cargo (any platform):**
+
+```bash
+cargo install ripgrep fd-find bat eza
+```
+
+**Verify Installation:**
+
+```bash
+command -v rg && echo "✅ ripgrep installed"
+command -v fd && echo "✅ fd installed"
+command -v bat && echo "✅ bat installed"
+command -v eza && echo "✅ eza installed"
+```
+
+## Install
+
+```bash
+/plugin marketplace add and3r817/dot-claude-plugins
+/plugin install modern-cli-enforcer@dot-claude-plugins
+```
+
+## Features
+
+### Why Modern Tools?
 
 **Performance**:
 - **ripgrep**: 2-10x faster than grep (parallel search)
@@ -35,18 +95,16 @@ This PreToolUse hook intercepts Bash commands and blocks execution when legacy C
 - Better error messages
 - Cross-platform compatibility
 
----
+### How It Works
 
-## How It Works
+**Detection Logic:**
 
-### Detection Logic
+1. **Command Analysis** - Hook parses Bash command for legacy tool usage
+2. **Availability Check** - Verifies if modern alternatives are installed
+3. **Blocking** - If modern tool available, blocks legacy command with system reminder
+4. **Fallback** - If modern tool unavailable, allows legacy command silently
 
-1. **Command Analysis**: Hook parses Bash command for legacy tool usage
-2. **Availability Check**: Verifies if modern alternatives are installed
-3. **Blocking**: If modern tool available, blocks legacy command with system reminder
-4. **Fallback**: If modern tool unavailable, allows legacy command silently
-
-### Example Behavior
+**Example Behavior:**
 
 **Scenario 1: Modern tool available (blocks)**
 ```bash
@@ -77,78 +135,22 @@ $ grep "TODO" src/**/*.py
 
 **Output**: Command executes normally (no interruption)
 
----
-
-## Installation
-
-### Option 1: Via Plugin Marketplace
-
-```bash
-/plugin marketplace add and3r817/dot-claude-plugins
-/plugin install modern-cli-enforcer@dot-claude-plugins
-```
-
-### Option 2: Manual Installation
-
-#### 1. Install Modern Tools (if not already installed)
-
-**macOS (Homebrew)**:
-```bash
-brew install ripgrep fd bat eza
-```
-
-**Linux (apt)**:
-```bash
-sudo apt install ripgrep fd-find bat
-cargo install eza
-```
-
-**Linux (cargo)**:
-```bash
-cargo install ripgrep fd-find bat eza
-```
-
-**Verify Installation**:
-```bash
-command -v rg && echo "✅ ripgrep installed"
-command -v fd && echo "✅ fd installed"
-command -v bat && echo "✅ bat installed"
-command -v eza && echo "✅ eza installed"
-```
-
----
-
-#### 2. Copy Plugin Files
-
-Copy the plugin directory to your Claude Code plugins location or reference it directly in settings.
-
----
-
-#### 3. Restart Claude Code
-
-```bash
-# Restart Claude Code to activate hook
-# The hook will now validate all Bash commands
-```
-
----
-
-## File Structure
+## Plugin Structure
 
 ```
 modern-cli-enforcer/
-  ├── hooks/
-  │   └── hooks.json          # Hook configuration
-  ├── scripts/
-  │   └── enforce.sh          # Enforcement logic
-  ├── .claude-plugin/
-  │   └── plugin.json         # Plugin manifest
-  └── README.md               # Documentation
+├── .claude-plugin/
+│   └── plugin.json           # Plugin manifest
+├── hooks/
+│   └── hooks.json            # PreToolUse hook configuration
+├── scripts/
+│   └── enforce.py            # Enforcement logic
+├── tests/
+│   └── test-enforce.sh       # Test suite
+└── README.md                 # This file
 ```
 
----
-
-## Usage Examples
+## Examples
 
 ### Example 1: Blocked Command (rg available)
 
@@ -164,8 +166,6 @@ grep "TODO" src/**/*.py
 rg "TODO" src/**/*.py
 ```
 
----
-
 ### Example 2: Blocked Command (fd available)
 
 **Command**:
@@ -179,8 +179,6 @@ find . -name "*.md"
 ```bash
 fd "*.md"
 ```
-
----
 
 ### Example 3: Blocked Command (bat available)
 
@@ -196,8 +194,6 @@ cat README.md
 bat README.md
 ```
 
----
-
 ### Example 4: Blocked Command (eza available)
 
 **Command**:
@@ -212,8 +208,6 @@ ls -la
 eza -la
 ```
 
----
-
 ### Example 5: Allowed Command (modern tool unavailable)
 
 **Command**:
@@ -225,7 +219,23 @@ grep "TODO" src/**/*.py
 
 **Result**: ✅ Allowed (fallback to legacy grep)
 
----
+## Testing
+
+Run the test suite:
+
+```bash
+./run-all-tests.sh
+# or
+./test-framework.sh modern-cli-enforcer/tests/test-enforce.sh
+```
+
+Tests cover:
+- Allow non-Bash commands
+- Allow commands when modern tools unavailable
+- Block legacy commands when modern tools available
+- Detect commands in pipes and chains
+- Handle edge cases (empty input, invalid JSON)
+- Validate error messages
 
 ## Quick Reference: Command Replacements
 
@@ -241,8 +251,6 @@ grep "TODO" src/**/*.py
 | `cat -n file.txt` | `bat file.txt` | `bat -n config.json` |
 | `ls -la` | `eza -la` | `eza -la --git` |
 | `ls -lh` | `eza -lh` | `eza -lh --tree` |
-
----
 
 ## Troubleshooting
 
@@ -261,89 +269,12 @@ cat .claude/settings.json | jq '.hooks.PreToolUse'
 command -v rg fd bat eza
 ```
 
----
-
-### Hook Blocking Too Aggressively
-
-**Customize Tool List**: Edit `scripts/enforce.sh` and remove tools you want to allow from the `TOOL_MAP`:
-
-```bash
-# Tool mapping: legacy -> modern
-declare -A TOOL_MAP=(
-  ["grep"]="ripgrep (rg)"
-  ["find"]="fd"
-  # ["cat"]="bat"  # Commented out to allow cat
-  ["ls"]="eza"
-)
-```
-
----
-
 ### Want to Temporarily Disable Hook
 
-**Option 1: Remove from settings.json**
-```json
-{
-  "hooks": {
-    "PreToolUse": []
-  }
-}
-```
-
-**Option 2: Rename hook temporarily**
+Uninstall the plugin:
 ```bash
-mv .claude/settings.json .claude/settings.json.backup
+/plugin uninstall modern-cli-enforcer
 ```
-
----
-
-## Customization
-
-### Add More Tools
-
-Edit the `TOOL_MAP` in `scripts/enforce.sh`:
-
-```bash
-declare -A TOOL_MAP=(
-  ["grep"]="ripgrep (rg)"
-  ["find"]="fd"
-  ["cat"]="bat"
-  ["ls"]="eza"
-  ["sed"]="sd"           # Add sd (modern sed replacement)
-  ["diff"]="delta"       # Add delta (syntax-aware diff)
-)
-```
-
-Add corresponding `check_tool_available` cases:
-
-```bash
-check_tool_available() {
-  local legacy="$1"
-  case "$legacy" in
-    grep) command -v rg &>/dev/null ;;
-    find) command -v fd &>/dev/null ;;
-    cat) command -v bat &>/dev/null ;;
-    ls) command -v eza &>/dev/null ;;
-    sed) command -v sd &>/dev/null ;;
-    diff) command -v delta &>/dev/null ;;
-    *) return 1 ;;
-  esac
-}
-```
-
----
-
-### Change Behavior (Warn Instead of Block)
-
-To allow execution with warning instead of blocking, edit `scripts/enforce.sh` and change `exit 2` to `exit 0`:
-
-```bash
-# Output error message but ALLOW execution
-echo -e "$MESSAGE" >&2
-exit 0  # Changed from exit 2 (blocks) to exit 0 (allows with warning)
-```
-
----
 
 ## Safety Features
 
@@ -354,34 +285,22 @@ exit 0  # Changed from exit 2 (blocks) to exit 0 (allows with warning)
 ✅ **Clear User Feedback**: System reminder with examples
 ✅ **Non-Breaking**: Can be disabled anytime
 
----
-
 ## Technical Details
 
 **Event Type**: PreToolUse
-**Tool Matcher**: Bash only
+**Tool Matcher**: Bash
 **Timeout**: 1 second
-**Exit Code**: 2 (blocking)
-**Shell**: bash (portable)
-**Dependencies**: jq (for JSON parsing)
+**Exit Code**: 2 (blocking), 0 (allowing)
+**Implementation**: Python 3
+**Dependencies**: None (uses stdlib only)
 
-**Detected Commands**: Uses regex word-boundary matching to avoid false positives (e.g., won't match "agrep" when looking for "grep")
-
----
+**Detection Logic**: Token-based command parsing to avoid false positives (e.g., won't match "agrep" when looking for "grep")
 
 ## Uninstall
-
-### Via Plugin System
 
 ```bash
 /plugin uninstall modern-cli-enforcer
 ```
-
-### Manual Uninstall
-
-Remove the plugin directory and any references from your settings.
-
----
 
 ## Learn More
 
@@ -394,10 +313,3 @@ Remove the plugin directory and any references from your settings.
 **Claude Code Hooks**:
 - [Hooks Documentation](https://docs.claude.com/en/docs/claude-code/hooks)
 - [Hook Examples](https://github.com/anthropics/claude-code/tree/main/examples/hooks)
-
----
-
-**Version**: 1.0.0
-**Date**: 2025-11-04
-
-🚀 **Enjoy faster, more powerful CLI workflows!**
