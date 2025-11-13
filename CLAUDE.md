@@ -40,23 +40,23 @@ Quick reference:
 
 ## Testing
 
-**Test Framework:**
+**Current State:**
 
-- `test-framework.sh` — Core test runner with colored output
-- `run-all-tests.sh` — Master runner for all plugin tests
-- Individual test suites in `<plugin>/tests/test-*.sh`
+- Individual test suites exist in `<plugin>/tests/test-*.sh`
+- Test framework infrastructure not yet implemented (needs: `test-framework.sh`, `run-all-tests.sh`)
+- Test files use framework functions (`print_section`, `run_test`) that need to be created
 
-**Run Tests:**
+**Manual Testing:**
 
 ```bash
-# All plugins
-./run-all-tests.sh
+# Test hook scripts manually
+echo '{"tool_name":"Bash","tool_input":{"command":"test cmd"}}' | python3 <plugin>/scripts/*.py
 
-# Single plugin
-./test-framework.sh github-write-guard/tests/test-gh-write-blocker.sh
+# Check exit code (0 = allow, 2 = block)
+echo $?
 ```
 
-**Test Function API:**
+**Test Structure (for when framework is implemented):**
 
 ```bash
 run_test "Test name" \
@@ -73,8 +73,6 @@ run_test "Test name" \
 - Test both allow and block cases
 - Test edge cases: empty input, invalid JSON, false positives
 - Validate helpful error messages with output patterns
-
-See `TESTING.md` for comprehensive testing guide.
 
 ## Development Workflow
 
@@ -132,10 +130,11 @@ In order:
 
 **Step 5: Integrate and Validate**
 
-1. Add test suite to `run-all-tests.sh` TEST_SUITES array
-2. Run tests: `./run-all-tests.sh`
+1. Test hook script manually with sample JSON input
+2. Verify exit codes (0 for allow, 2 for block)
 3. Add plugin to `.claude-plugin/marketplace.json`
 4. Update root README.md
+5. (Future: Add to automated test suite when framework is implemented)
 
 **Step 6: Iterate**
 
@@ -216,13 +215,11 @@ Basic hooks/hooks.json structure:
 ## Commands
 
 ```bash
-# Testing
-./run-all-tests.sh                               # Run all test suites
-./test-framework.sh <plugin>/tests/test-*.sh     # Run specific test
-
 # Plugin development
-jq . <plugin>/.claude-plugin/plugin.json         # Validate JSON
-echo '{"tool_name":"Bash",...}' | python3 script.py  # Test hook manually
+jq . <plugin>/.claude-plugin/plugin.json                                    # Validate JSON
+echo '{"tool_name":"Bash","tool_input":{"command":"..."}}' | python3 script.py  # Test hook manually
+python3 -m py_compile <plugin>/scripts/*.py                                 # Check Python syntax
+bash -n <plugin>/tests/*.sh                                                 # Check bash syntax
 
 # Installation (in Claude Code)
 /plugin marketplace add and3r817/dot-claude-plugins
@@ -254,7 +251,7 @@ echo '{"tool_name":"Bash",...}' | python3 script.py  # Test hook manually
 - README.md with installation and usage
 - Clear description in plugin.json
 - Comment complex hook logic
-- Reference TESTING.md for test patterns
+- See docs/adding-new-plugin.md for test patterns
 
 ## Project-Specific Notes
 
@@ -265,13 +262,14 @@ echo '{"tool_name":"Bash",...}' | python3 script.py  # Test hook manually
 - Import json, sys for stdin parsing
 - Preferred over bash for complex logic
 
-**Test Framework Features:**
+**Test Framework (Planned Features):**
 
 - Colored output (green ✓, red ✗)
 - Section headers for organization
 - Exit code validation
 - Optional stderr pattern matching
 - Summary with pass/fail counts
+- Note: Framework infrastructure needs to be implemented
 
 **Marketplace Integration:**
 
