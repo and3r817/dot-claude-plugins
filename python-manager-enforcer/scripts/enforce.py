@@ -150,7 +150,7 @@ def main():
 
         suggested = suggest_replacement(command, manager)
 
-        sys.stderr.write(f"❌ Direct python blocked.\nUSE: {suggested}")
+        sys.stderr.write(f"❌ Direct python blocked. USE: {suggested}")
         sys.exit(2)
 
     except Exception as e:
