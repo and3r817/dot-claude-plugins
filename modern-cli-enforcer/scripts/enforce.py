@@ -44,7 +44,7 @@ def main():
         if blocks:
             suggestions = '\n'.join(f"USE '{new}' instead '{old}'" for old, new in blocks)
 
-            sys.stderr.write(f"❌ Legacy CLI blocked.\n{suggestions}")
+            sys.stderr.write(f"❌ Legacy CLI blocked. {suggestions}")
             sys.exit(2)
 
         sys.exit(0)

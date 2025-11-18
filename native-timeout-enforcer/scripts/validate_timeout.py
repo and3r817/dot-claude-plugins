@@ -59,7 +59,7 @@ def main():
             ms = to_ms(duration)
 
             sys.stderr.write(
-                f"⚠️ Direct timeout blocked.\nUse Bash timeout parameter: Bash(command=\"{actual}\", timeout={ms})")
+                f"⚠️ Direct timeout blocked. Use Bash timeout parameter: Bash(command=\"{actual}\", timeout={ms})")
             sys.exit(2)
 
         # Pattern 2 & 3: timeout in chains/pipes (minimal string ops)
@@ -67,7 +67,7 @@ def main():
             # Quick check before expensive operations
             if any(sep in cmd for sep in ('&&', '||', ';', '|')):
                 sys.stderr.write(
-                    f"⚠️ Timeout in command chain blocked.\nSplit into separate Bash calls with timeout parameter")
+                    f"⚠️ Timeout in command chain blocked. Split into separate Bash calls with timeout parameter")
                 sys.exit(2)
 
         sys.exit(0)
