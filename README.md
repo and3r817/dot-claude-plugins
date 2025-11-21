@@ -21,6 +21,10 @@ A small collection of plugins I use with Claude Code.
 - [codex-advisor](./codex-advisor/README.md) – Advisory consultation skill for architectural reviews, design decisions,
   code analysis, and technology evaluation. Codex provides recommendations without making code changes.
 
+- [android-analysis](./android-analysis/README.md) – Comprehensive Android APK/AAR analysis toolkit with expert skill
+  and automation commands for size optimization, security assessment, performance profiling, dependency management, and
+  reverse engineering.
+
 ## Manage
 
 ```bash

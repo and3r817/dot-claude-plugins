@@ -46,6 +46,23 @@
         "codex",
         "skill"
       ]
+    },
+    {
+      "name": "android-analysis",
+      "source": "./android-analysis",
+      "description": "Comprehensive Android APK/AAR analysis toolkit with expert skill and automation commands for size optimization, security assessment, performance profiling, dependency management, and reverse engineering",
+      "tags": [
+        "android",
+        "apk",
+        "aar",
+        "security",
+        "performance",
+        "analysis",
+        "reverse-engineering",
+        "mobile",
+        "skill",
+        "commands"
+      ]
     }
   ]
 }
