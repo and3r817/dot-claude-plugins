@@ -1,7 +1,19 @@
 ---
 name: android-analysis
 description: Expert Android and Java reverse engineering for APK/AAR/JAR decompilation and inspection. Use when analyzing Android binaries, unpacking libraries, decompiling code, understanding obfuscated apps, or extracting resources from compiled artifacts.
-allowed-tools: Read, Grep, Glob, Bash(jadx:*), Bash(apktool:*), Bash(apkanalyzer:*), Bash(java:*), Bash(unzip:*), Bash(jar:*), Bash(tree:*), WebFetch, WebSearch
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash(jadx:*)
+  - Bash(apktool:*)
+  - Bash(apkanalyzer:*)
+  - Bash(java:*)
+  - Bash(unzip:*)
+  - Bash(jar:*)
+  - Bash(tree:*)
+  - WebFetch
+  - WebSearch
 ---
 
 # Android & Java Binary Analysis
