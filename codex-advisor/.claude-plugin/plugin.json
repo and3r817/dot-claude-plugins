@@ -1,6 +1,6 @@
 {
   "name": "codex-advisor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Advisory consultation skill for architectural reviews, design decisions, code analysis, and technology evaluation. Codex provides recommendations without making code changes.",
   "author": {
     "name": "and3r817",
