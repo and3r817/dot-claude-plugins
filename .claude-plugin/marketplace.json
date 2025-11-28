@@ -50,7 +50,7 @@
     {
       "name": "android-analysis",
       "source": "./android-analysis",
-      "description": "Comprehensive Android APK/AAR analysis toolkit with expert skill and automation commands for size optimization, security assessment, performance profiling, dependency management, and reverse engineering",
+      "description": "Android APK/AAR/JAR decompilation and inspection toolkit for analyzing compiled binaries and unpacking libraries",
       "tags": [
         "android",
         "apk",
@@ -62,6 +62,35 @@
         "mobile",
         "skill",
         "commands"
+      ]
+    },
+    {
+      "name": "ast-grep",
+      "source": "./ast-grep",
+      "description": "Structural code search using AST patterns. Translates natural language queries into ast-grep rules for precise code matching beyond text search.",
+      "tags": [
+        "ast",
+        "code-search",
+        "structural-search",
+        "pattern-matching",
+        "refactoring",
+        "skill"
+      ]
+    },
+    {
+      "name": "android-kotlin-compose",
+      "source": "./android-kotlin-compose",
+      "description": "Android development guidance with Kotlin and Jetpack Compose. MVVM architecture, state management, Navigation, Room, Hilt, and Material3 patterns.",
+      "tags": [
+        "android",
+        "kotlin",
+        "jetpack-compose",
+        "mvvm",
+        "material3",
+        "hilt",
+        "room",
+        "navigation",
+        "skill"
       ]
     }
   ]

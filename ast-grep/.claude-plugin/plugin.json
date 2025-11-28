@@ -1,0 +1,17 @@
+{
+  "name": "ast-grep",
+  "version": "1.0.0",
+  "description": "Structural code search using AST patterns. Translates natural language queries into ast-grep rules for precise code matching beyond text search.",
+  "author": {
+    "name": "and3r817",
+    "url": "https://github.com/and3r817"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ast",
+    "code-search",
+    "structural-search",
+    "pattern-matching",
+    "refactoring"
+  ]
+}
