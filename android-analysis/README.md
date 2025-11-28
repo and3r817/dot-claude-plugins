@@ -1,6 +1,6 @@
 # Android Analysis
 
-Android reverse engineering toolkit for decompiling and inspecting APKs, AARs, and JARs.
+Android APK/AAR/JAR decompilation and inspection toolkit for analyzing compiled binaries and unpacking libraries.
 
 ## Features
 
@@ -57,7 +57,7 @@ The skill will:
 
 ### Quick Command
 
-For comprehensive reverse engineering:
+For comprehensive analysis:
 
 ```bash
 /android-reverse app-release.apk
