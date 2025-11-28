@@ -1,0 +1,20 @@
+{
+  "name": "android-kotlin-compose",
+  "version": "1.0.0",
+  "description": "Android development guidance with Kotlin and Jetpack Compose. MVVM architecture, state management, Navigation, Room, Hilt, and Material3 patterns.",
+  "author": {
+    "name": "and3r817",
+    "url": "https://github.com/and3r817"
+  },
+  "license": "MIT",
+  "keywords": [
+    "android",
+    "kotlin",
+    "jetpack-compose",
+    "mvvm",
+    "material3",
+    "hilt",
+    "room",
+    "navigation"
+  ]
+}
