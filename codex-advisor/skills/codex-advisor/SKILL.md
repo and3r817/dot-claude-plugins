@@ -1,7 +1,12 @@
 ---
 name: codex-advisor
 description: Advisory consultation skill for architectural reviews, design decisions, code analysis, and technology evaluation. Codex provides recommendations without making code changes. Invoked by phrases like "consult Codex", "get Codex's opinion", "ask Codex about", "have Codex review", "Codex analysis", "validate this approach", "brainstorm with Codex", or "Codex consensus".
-allowed-tools: Read, Grep, Glob, mcp__codex__codex, mcp__codex__codex-reply
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - mcp__codex__codex
+  - mcp__codex__codex-reply
 ---
 
 # Codex Advisor
@@ -323,33 +328,6 @@ Structure as formal evaluation:
 
 What would you like to do?
 ```
-
-## Error Handling
-
-### If CLAUDE.md is Missing or Unreadable
-
-1. Note limitation to user: "CLAUDE.md not found - proceeding without project-specific constraints"
-2. Ask user: "Would you like to provide key project constraints manually?"
-3. Continue consultation with available context
-
-### If System Prompt File Not Found
-
-1. Report error to user: "System prompt file missing at [path]"
-2. Suggest checking skill installation
-3. Do not proceed with consultation
-
-### If Codex Returns Error
-
-1. Show full error message to user
-2. Check if parameters were correct (especially stance replacement)
-3. Suggest simpler prompt or different mode
-4. Offer to retry with corrections
-
-### If Stance Replacement Fails (Consensus Mode)
-
-1. Fall back to neutral stance
-2. Notify user: "Using neutral stance (default)"
-3. Continue with consultation
 
 ### Common Anti-Patterns to Avoid
 
