@@ -21,9 +21,14 @@ A small collection of plugins I use with Claude Code.
 - [codex-advisor](./codex-advisor/README.md) – Advisory consultation skill for architectural reviews, design decisions,
   code analysis, and technology evaluation. Codex provides recommendations without making code changes.
 
-- [android-analysis](./android-analysis/README.md) – Comprehensive Android APK/AAR analysis toolkit with expert skill
-  and automation commands for size optimization, security assessment, performance profiling, dependency management, and
-  reverse engineering.
+- [android-analysis](./android-analysis/README.md) – Android APK/AAR/JAR decompilation and inspection toolkit for
+  analyzing compiled binaries and unpacking libraries.
+
+- [ast-grep](./ast-grep/README.md) – Structural code search using AST patterns. Translates natural language queries into
+  ast-grep rules for precise code matching beyond text search.
+
+- [android-kotlin-compose](./android-kotlin-compose/README.md) – Android development guidance with Kotlin and Jetpack
+  Compose. MVVM architecture, state management, Navigation, Room, Hilt, and Material3 patterns.
 
 ## Manage
 
