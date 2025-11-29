@@ -47,3 +47,9 @@ cargo install ast-grep
 
 - [ast-grep Documentation](https://ast-grep.github.io/)
 - [ast-grep Playground](https://ast-grep.github.io/playground.html)
+
+## Acknowledgments
+
+Based on the original concept from [ast-grep/claude-skill](https://github.com/ast-grep/claude-skill) by
+[Herrington Darkholme](https://github.com/HerringtonDarkholme). Skill content rewritten and expanded with reference
+documentation from the [official ast-grep docs](https://ast-grep.github.io/).
