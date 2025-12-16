@@ -476,7 +476,7 @@ Use `mcp__codex__codex` tool with these parameters:
 - `developer-instructions`: [Modified template from step 3]
 - `sandbox`: "read-only"
 - `approval-policy`: "never"
-- `model`: "gpt-5-codex"
+- `model`: "gpt-5.2"
 
 ## Summary
 

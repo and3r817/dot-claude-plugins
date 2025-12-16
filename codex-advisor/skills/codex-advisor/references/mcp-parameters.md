@@ -69,12 +69,9 @@ Primary tool for initiating a Codex collaboration session in either Chat or Cons
 **model** (string)
 
 - Override the model used for collaboration
-- Options: `"gpt-5-codex"`, `"gpt-5"`
 - Default uses configured model
-- **gpt-5-codex**: Optimized for coding tasks, refactoring, architectural analysis (scores 51.3% on code refactoring vs
-  33.9% for gpt-5). Adapts thinking time dynamically based on complexity. Available in Responses API only.
-- **gpt-5**: General reasoning model for non-coding logical/technical/scientific tasks
-- Recommend `"gpt-5-codex"` for code-related architectural analysis and consensus evaluations
+- **gpt-5.2**: Latest model for coding tasks, refactoring, architectural analysis, and general reasoning
+- Recommend `"gpt-5.2"` for code-related architectural analysis and consensus evaluations
 
 **base-instructions** (string)
 
@@ -166,7 +163,7 @@ Follow-up calls use the mode and configuration from the initial session. You can
   "developer-instructions": "[Complete consensus mode system prompt with neutral stance from consensus-pattern.md]",
   "sandbox": "read-only",
   "approval-policy": "never",
-  "model": "gpt-5-codex"
+  "model": "gpt-5.2"
 }
 ```
 
@@ -178,7 +175,7 @@ Follow-up calls use the mode and configuration from the initial session. You can
   "developer-instructions": "[Complete consensus mode system prompt with skeptical stance from consensus-pattern.md]",
   "sandbox": "read-only",
   "approval-policy": "never",
-  "model": "gpt-5-codex"
+  "model": "gpt-5.2"
 }
 ```
 
@@ -190,7 +187,7 @@ Follow-up calls use the mode and configuration from the initial session. You can
   "developer-instructions": "[Complete consensus mode system prompt with security-focused stance from consensus-pattern.md]",
   "sandbox": "read-only",
   "approval-policy": "never",
-  "model": "gpt-5-codex"
+  "model": "gpt-5.2"
 }
 ```
 
@@ -274,7 +271,7 @@ Always include these parameters to ensure Codex operates purely in advisory capa
 - Discussing implementation pragmatics
 - Seeking peer-level technical validation
 - Iterative refinement of approaches
-- **Model choice**: Use `gpt-5-codex` for code-related discussions, `gpt-5` for general reasoning
+- **Model choice**: Use `gpt-5.2` for all discussions
 
 ### Use Consensus Mode When:
 
@@ -283,17 +280,17 @@ Always include these parameters to ensure Codex operates purely in advisory capa
 - Requiring structured multi-dimensional analysis
 - Needing confidence-scored assessments
 - Documenting formal evaluations
-- **Model choice**: Use `gpt-5-codex` for code/architecture evaluations
+- **Model choice**: Use `gpt-5.2` for code/architecture evaluations
 
 ### Parameters Comparison
 
-| Parameter                | Chat Mode                             | Consensus Mode                           |
-|--------------------------|---------------------------------------|------------------------------------------|
-| `prompt` style           | Context + problem + question          | Proposal + context + evaluation focus    |
-| `developer-instructions` | Chat system prompt                    | Consensus system prompt + stance         |
-| `model` recommendation   | `gpt-5-codex` for code, `gpt-5` other | `gpt-5-codex` for architectural analysis |
-| `sandbox`                | `read-only` (required)                | `read-only` (required)                   |
-| `approval-policy`        | `never` (required)                    | `never` (required)                       |
+| Parameter                | Chat Mode                    | Consensus Mode                        |
+|--------------------------|------------------------------|---------------------------------------|
+| `prompt` style           | Context + problem + question | Proposal + context + evaluation focus |
+| `developer-instructions` | Chat system prompt           | Consensus system prompt + stance      |
+| `model` recommendation   | `gpt-5.2` (recommended)      | `gpt-5.2` for architectural analysis  |
+| `sandbox`                | `read-only` (required)       | `read-only` (required)                |
+| `approval-policy`        | `never` (required)           | `never` (required)                    |
 
 ## Stance Selection for Consensus Mode
 
@@ -401,7 +398,7 @@ Invoke `mcp__codex__codex` tool with:
 
 ✅ **Include developer-instructions** — Required for proper mode configuration
 
-✅ **Use gpt-5-codex for Consensus** — Code/architecture evaluations benefit from specialized model
+✅ **Use gpt-5.2 for Consensus** — Code/architecture evaluations benefit from latest model
 
 ✅ **Provide rich context** — Scale, team, tech, constraints in prompts
 
@@ -446,7 +443,7 @@ Invoke `mcp__codex__codex` tool with:
 
 - `developer-instructions`: Consensus system prompt + stance from `consensus-pattern.md`
 - Prompt: Proposal + context + evaluation focus
-- Recommended: `model: "gpt-5-codex"` for code/architecture analysis, `model: "gpt-5"` for general reasoning
+- Recommended: `model: "gpt-5.2"` for code/architecture analysis
 
 Both modes maintain strict advisory boundaries while providing distinct collaboration styles optimized for different
 decision contexts.

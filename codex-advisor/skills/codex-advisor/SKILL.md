@@ -1,12 +1,7 @@
 ---
 name: codex-advisor
 description: Advisory consultation skill for architectural reviews, design decisions, code analysis, and technology evaluation. Codex provides recommendations without making code changes. Invoked by phrases like "consult Codex", "get Codex's opinion", "ask Codex about", "have Codex review", "Codex analysis", "validate this approach", "brainstorm with Codex", or "Codex consensus".
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - mcp__codex__codex
-  - mcp__codex__codex-reply
+allowed-tools: Read, Grep, Glob, mcp__codex__codex, mcp__codex__codex-reply
 ---
 
 # Codex Advisor
@@ -84,7 +79,7 @@ Determine which collaboration mode fits the user's request:
 
 **2a. Load system prompt:**
 
-- Read the file `references/prompts/chat-mode-system-prompt.md`
+- Read the file `prompts/chat-mode-system-prompt.md`
 - Use the complete contents as `developer-instructions` parameter
 
 **2b. Invoke Codex:**
@@ -103,7 +98,7 @@ patterns.
 
 **2a. Load system prompt template:**
 
-- Read the file `references/prompts/consensus-mode-system-prompt.md`
+- Read the file `prompts/consensus-mode-system-prompt.md`
 - This file contains a `{stance_prompt}` placeholder that must be replaced
 
 **2b. Select and apply stance:**
@@ -128,7 +123,7 @@ Use `mcp__codex__codex` tool with these parameters:
 - `sandbox`: "read-only" (REQUIRED)
 - `approval-policy`: "never"
 - `cwd`: Current project directory path (optional)
-- `model`: "gpt-5-codex" (recommended for architecture/code evaluation)
+- `model`: "gpt-5.2" (recommended for architecture/code evaluation)
 
 **Note:** Consensus mode uses optimized GPT-5 prompt (~420 tokens). See `references/consensus-pattern.md` for detailed
 evaluation framework.
@@ -233,7 +228,7 @@ Before presenting Codex's response to the user, verify you completed these steps
 ```
 mcp__codex__codex(
   prompt: "We're experiencing slow dashboard load times (2-3 seconds) with 50K daily users. Current stack: Node.js + Express + PostgreSQL. Considering Redis for caching. What are the key trade-offs and potential pitfalls? What caching patterns work best for dashboards with user-specific data?",
-  developer-instructions: "[Load from references/prompts/chat-mode-system-prompt.md]",
+  developer-instructions: "[Load from prompts/chat-mode-system-prompt.md]",
   sandbox: "read-only",
   approval-policy: "never"
 )
@@ -257,10 +252,10 @@ Context:
 - Timeline: 6 months
 
 Evaluate this proposal across technical feasibility, implementation complexity, and long-term implications.",
-  developer-instructions: "[Load from references/prompts/consensus-mode-system-prompt.md, replace {stance_prompt} with neutral stance]",
+  developer-instructions: "[Load from prompts/consensus-mode-system-prompt.md, replace {stance_prompt} with neutral stance]",
   sandbox: "read-only",
   approval-policy: "never",
-  model: "gpt-5-codex"
+  model: "gpt-5.2"
 )
 ```
 

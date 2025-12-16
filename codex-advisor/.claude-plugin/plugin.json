@@ -1,11 +1,13 @@
 {
   "name": "codex-advisor",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Advisory consultation skill for architectural reviews, design decisions, code analysis, and technology evaluation. Codex provides recommendations without making code changes.",
   "author": {
     "name": "and3r817",
     "url": "https://github.com/and3r817"
   },
+  "homepage": "https://github.com/and3r817/dot-claude-plugins/tree/main/codex-advisor#readme",
+  "repository": "https://github.com/and3r817/dot-claude-plugins",
   "license": "MIT",
   "keywords": [
     "advisory",
