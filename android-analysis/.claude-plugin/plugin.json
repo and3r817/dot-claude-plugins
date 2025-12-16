@@ -1,11 +1,13 @@
 {
   "name": "android-analysis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Android APK, AAR, and JAR decompilation and inspection toolkit for analyzing compiled binaries, unpacking libraries, and understanding obfuscated code",
   "author": {
     "name": "and3r817",
     "url": "https://github.com/and3r817"
   },
+  "homepage": "https://github.com/and3r817/dot-claude-plugins/tree/main/android-analysis#readme",
+  "repository": "https://github.com/and3r817/dot-claude-plugins",
   "license": "MIT",
   "keywords": [
     "android",

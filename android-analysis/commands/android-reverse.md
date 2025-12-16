@@ -1,15 +1,7 @@
 ---
 description: Reverse engineer Android APK (decompile, inspect resources, verify signature)
-allowed-tools:
-  - Bash(jadx:*)
-  - Bash(apktool:*)
-  - Bash(aapt:*)
-  - Bash(apksigner:*)
-  - Bash(unzip:*)
-  - Read
-  - Grep
-  - Glob
-  - AskUserQuestion
+argument-hint: [apk-file] [--decompile|--disassemble|--inspect|--all]
+allowed-tools: Bash(jadx:*), Bash(apktool:*), Bash(aapt:*), Bash(apksigner:*), Bash(unzip:*), Read, Grep, Glob, AskUserQuestion
 ---
 
 # Android Reverse Engineering
