@@ -92,6 +92,23 @@
         "navigation",
         "skill"
       ]
+    },
+    {
+      "name": "android-kotlin-coroutines",
+      "source": "./android-kotlin-coroutines",
+      "description": "Android development guidance with Kotlin Coroutines and Flow. Structured concurrency, StateFlow/SharedFlow patterns, lifecycle integration, testing with Turbine, and library integrations.",
+      "tags": [
+        "android",
+        "kotlin",
+        "coroutines",
+        "flow",
+        "stateflow",
+        "async",
+        "concurrency",
+        "testing",
+        "turbine",
+        "skill"
+      ]
     }
   ]
 }

@@ -1,0 +1,22 @@
+{
+  "name": "android-kotlin-coroutines",
+  "version": "1.0.0",
+  "description": "Android development guidance with Kotlin Coroutines and Flow. Structured concurrency, StateFlow/SharedFlow patterns, lifecycle integration, testing with Turbine, and library integrations (Retrofit, Room, WorkManager).",
+  "author": {
+    "name": "and3r817",
+    "url": "https://github.com/and3r817"
+  },
+  "license": "MIT",
+  "keywords": [
+    "android",
+    "kotlin",
+    "coroutines",
+    "flow",
+    "stateflow",
+    "sharedflow",
+    "async",
+    "concurrency",
+    "testing",
+    "turbine"
+  ]
+}

@@ -157,11 +157,18 @@ This prevents blocking `grep` in `cat mygrep.txt` or `find` in `/path/to/find/fi
 
 ## Available Plugins
 
+**Enforcement Hooks** (PreToolUse validation):
 - **github-cli**: Security guard (blocks gh write ops) + comprehensive gh usage skill
 - **modern-cli-enforcer**: Enforces rg/fd/bat/eza over grep/find/cat/ls
 - **native-timeout-enforcer**: Blocks timeout/gtimeout, suggests Bash tool's native timeout param
 - **python-manager-enforcer**: Enforces Poetry/UV/Rye/PDM in managed projects
+
+**Pure Skills** (capabilities without hooks):
 - **codex-advisor**: Advisory skill for architecture/design consultation (no code changes)
+- **android-analysis**: APK/AAR/JAR decompilation and inspection toolkit
+- **ast-grep**: Structural code search using AST patterns
+- **android-kotlin-compose**: Android development with Kotlin and Jetpack Compose
+- **android-kotlin-coroutines**: Android development with Kotlin Coroutines and Flow
 
 ## Documentation References
 
@@ -173,7 +180,7 @@ This prevents blocking `grep` in `cat mygrep.txt` or `find` in `/path/to/find/fi
 
 ## Project Conventions
 
-**Python Hook Scripts**:
+**Hook Scripts** (all Python):
 
 - Shebang: `#!/usr/bin/env python3`
 - Minimal imports: `json`, `sys`, `shutil` (for command availability checks)
@@ -184,10 +191,5 @@ This prevents blocking `grep` in `cat mygrep.txt` or `find` in `/path/to/find/fi
 
 - Group by category with `print_section` headers
 - Descriptive test names: "Block grep when rg available" (not "Test 1")
-- Extend existing test files (don't create new ones per memory `hook-test-edge-cases-design`)
+- Extend existing test files (don't create new ones)
 - Test security-critical cases first (e.g., HTTP method case sensitivity for gh hooks)
-
-**Serena MCP Usage**:
-
-- Memory: `hook-test-edge-cases-design` (test patterns and edge case documentation)
-- Use symbolic tools (`find_symbol`, `get_symbols_overview`) over full file reads

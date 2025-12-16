@@ -30,6 +30,10 @@ A small collection of plugins I use with Claude Code.
 - [android-kotlin-compose](./android-kotlin-compose/README.md) – Android development guidance with Kotlin and Jetpack
   Compose. MVVM architecture, state management, Navigation, Room, Hilt, and Material3 patterns.
 
+- [android-kotlin-coroutines](./android-kotlin-coroutines/README.md) – Android development guidance with Kotlin
+  Coroutines and Flow. Structured concurrency, StateFlow/SharedFlow patterns, testing with Turbine, and library
+  integrations.
+
 ## Manage
 
 ```bash
