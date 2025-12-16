@@ -1,11 +1,13 @@
 {
   "name": "ast-grep",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Structural code search using AST patterns. Translates natural language queries into ast-grep rules for precise code matching beyond text search.",
   "author": {
     "name": "and3r817",
     "url": "https://github.com/and3r817"
   },
+  "homepage": "https://github.com/and3r817/dot-claude-plugins/tree/main/ast-grep#readme",
+  "repository": "https://github.com/and3r817/dot-claude-plugins",
   "license": "MIT",
   "keywords": [
     "ast-grep",
