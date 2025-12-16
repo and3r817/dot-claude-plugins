@@ -54,6 +54,8 @@
     "name": "and3r817",
     "url": "https://github.com/and3r817"
   },
+  "homepage": "https://github.com/and3r817/my-plugin#readme",
+  "repository": "https://github.com/and3r817/my-plugin",
   "license": "MIT",
   "keywords": ["tag1", "tag2"]
 }
@@ -178,6 +180,30 @@
 
 **Agent Default:** Use `"MIT"` for this repository.
 
+#### homepage
+
+**Type:** String
+
+**Purpose:** Documentation or landing page URL
+
+```json
+"homepage": "https://github.com/and3r817/my-plugin#readme"
+```
+
+**Agent Usage:** Link to plugin documentation or GitHub README.
+
+#### repository
+
+**Type:** String
+
+**Purpose:** Source code repository URL
+
+```json
+"repository": "https://github.com/and3r817/my-plugin"
+```
+
+**Agent Usage:** Link to source code for transparency and contributions.
+
 #### keywords
 
 **Type:** Array of strings
@@ -201,7 +227,7 @@
 
 #### commands
 
-**Type:** Array of strings (paths)
+**Type:** Array of strings (paths) or string (directory path)
 
 ```json
 "commands": [
@@ -216,6 +242,7 @@
 - Paths relative to plugin root
 - Use forward slashes (Unix-style), NOT backslashes
 - Must point to .md files with frontmatter
+- Custom paths SUPPLEMENT default `commands/` directory
 
 **Example:**
 
@@ -227,6 +254,23 @@ my-plugin/
 └── .claude-plugin/
     └── plugin.json  →  "commands": ["./commands/deploy.md", "./commands/status.md"]
 ```
+
+#### agents
+
+**Type:** String (directory path)
+
+**Purpose:** Custom directory for agent definitions
+
+```json
+"agents": "./custom/agents/"
+```
+
+**Agent Rules:**
+
+- Optional field (default: `agents/` directory)
+- Custom path SUPPLEMENTS default `agents/` directory
+- Agent files are `.md` with frontmatter similar to commands
+- Use for custom agent configurations
 
 ## Critical: What NOT to Include
 

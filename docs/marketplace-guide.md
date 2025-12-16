@@ -568,6 +568,38 @@ username/repository/
 /plugin install plugin-name@username/repository
 ```
 
+### Installation Scopes
+
+Plugins can be installed with different scopes controlling where settings are stored:
+
+| Scope     | Settings File                 | Sharing                  | Use Case                      |
+|-----------|-------------------------------|--------------------------|-------------------------------|
+| `user`    | `~/.claude/settings.json`     | All projects (default)   | Personal productivity plugins |
+| `project` | `.claude/settings.json`       | Git-shared with team     | Team-standard plugins         |
+| `local`   | `.claude/settings.local.json` | Gitignored, project-only | Personal project overrides    |
+| `managed` | Enterprise-managed            | Read-only                | Organization policies         |
+
+**Installation with scope:**
+
+```bash
+# Install for current user (default)
+/plugin install plugin-name@marketplace --scope user
+
+# Install for project (shared via git)
+/plugin install plugin-name@marketplace --scope project
+
+# Install locally (gitignored)
+/plugin install plugin-name@marketplace --scope local
+```
+
+**Scope precedence:** `local` > `project` > `user` > `managed`
+
+**Agent Recommendations:**
+
+- Use `user` for personal productivity tools
+- Use `project` for team-standardized enforcement hooks
+- Use `local` for testing or personal project-specific overrides
+
 **Agent Documentation Pattern for README:**
 
 ```markdown

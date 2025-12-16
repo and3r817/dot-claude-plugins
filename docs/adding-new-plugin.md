@@ -280,7 +280,7 @@ python3 -m json.tool my-plugin/.claude-plugin/plugin.json
 
 - Replace `"matcher": "Bash"` with target tool (Bash, Write, Edit, etc.)
 - Use `${CLAUDE_PLUGIN_ROOT}` for script path (REQUIRED)
-- Set timeout to 1 second (enforced by Claude Code)
+- Set timeout appropriately (1-5 seconds for PreToolUse validation)
 
 **Step 3.2: Create validation script**
 

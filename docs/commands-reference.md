@@ -91,6 +91,45 @@ description: This command deploys the application to production and runs post-de
 
 ### Optional Fields
 
+#### argument-hint
+
+**Type:** String
+
+**Purpose:** Show expected arguments in autocomplete
+
+```yaml
+argument-hint: [message]
+argument-hint: [environment] [--force]
+argument-hint: <file-path>
+```
+
+**Agent Usage:** Helps users understand what arguments the command expects.
+
+#### model
+
+**Type:** String
+
+**Purpose:** Override the default model for this command
+
+```yaml
+model: claude-opus-4-5-20251101
+model: claude-sonnet-4-20250514
+```
+
+**Agent Usage:** Use when command requires specific model capabilities (e.g., complex reasoning).
+
+#### disable-model-invocation
+
+**Type:** Boolean
+
+**Purpose:** Prevent SlashCommand tool from invoking this command automatically
+
+```yaml
+disable-model-invocation: true
+```
+
+**Agent Usage:** Set `true` for commands that should only be user-invoked, not model-invoked.
+
 #### allowed-tools
 
 **Type:** Array of strings
@@ -151,6 +190,88 @@ bash_permissions:
   - git        # Allows git status, git commit, git push, etc.
   - pytest     # Allows pytest -v, pytest --cov, etc.
 ```
+
+## Argument Handling
+
+### Variable Substitution
+
+Commands can access user arguments via special variables:
+
+| Variable     | Description                    | Example Input  | Result    |
+|--------------|--------------------------------|----------------|-----------|
+| `$ARGUMENTS` | All arguments as single string | `/cmd foo bar` | `foo bar` |
+| `$1`         | First positional argument      | `/cmd foo bar` | `foo`     |
+| `$2`         | Second positional argument     | `/cmd foo bar` | `bar`     |
+| `$3`         | Third positional argument      | `/cmd a b c`   | `c`       |
+
+**Example command using arguments:**
+
+```markdown
+---
+description: Create a git commit with message
+argument-hint: [message]
+allowed-tools:
+  - Bash(git:*)
+---
+
+Create a git commit with this message: $ARGUMENTS
+
+If no message provided, ask user for commit message.
+```
+
+### Inline Bash Execution
+
+Use `!` prefix for inline bash commands within the command prompt:
+
+```markdown
+---
+description: Show project status
+allowed-tools:
+  - Bash(git:*)
+  - Bash(npm:*)
+---
+
+# Project Status
+
+Show the following information:
+1. Git status: !git status --short
+2. Current branch: !git branch --show-current
+3. NPM outdated: !npm outdated
+```
+
+**Agent Rules:**
+
+- `!` prefix requires corresponding `allowed-tools` entry
+- Bash output is included in command context
+- Use for gathering information before processing
+
+### File References
+
+Use `@` prefix to include file contents in command context:
+
+```markdown
+---
+description: Review a specific file
+allowed-tools:
+  - Read
+---
+
+Review the following file for issues:
+@$1
+
+Focus on:
+- Code quality
+- Potential bugs
+- Performance issues
+```
+
+**Usage:** `/review @src/utils.js` includes file contents in context.
+
+**Agent Rules:**
+
+- `@` prefix reads file contents into command prompt
+- Requires `Read` in allowed-tools
+- Can combine with positional arguments: `@$1`
 
 ## Command Structure Patterns
 

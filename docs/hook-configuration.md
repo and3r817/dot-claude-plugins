@@ -136,17 +136,67 @@
 
 **Agent Usage:** Rarely needed unless plugin requires initialization.
 
+### PermissionRequest — Permission Dialog Interception
+
+**Triggers:** When user sees a permission dialog
+**Use case:** Auto-approve/deny based on patterns, logging permission requests
+**Exit codes:** 0 (proceed with dialog), 2 (deny automatically)
+
+**Example:**
+
+```json
+"PermissionRequest": [
+  {
+    "hooks": [
+      {
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/scripts/permission-handler.py",
+        "timeout": 5,
+        "description": "Auto-approve safe operations"
+      }
+    ]
+  }
+]
+```
+
+**Agent Usage:** Automate permission decisions for known-safe patterns.
+
+### Notification — Alert Handling
+
+**Triggers:** When Claude Code sends notifications/alerts
+**Use case:** Custom notification routing, logging, external integrations
+**Exit codes:** Ignored (informational)
+
+**Example:**
+
+```json
+"Notification": [
+  {
+    "hooks": [
+      {
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/scripts/notify-slack.sh",
+        "timeout": 10,
+        "description": "Send notifications to Slack"
+      }
+    ]
+  }
+]
+```
+
+**Agent Usage:** Route notifications to external systems (Slack, email, logging).
+
 ### Other Event Types
 
 Less commonly used:
 
 - `SessionEnd` — Session termination cleanup
-- `UserPromptSubmit` — Before processing user input
-- `Stop` — Main agent completion
-- `SubagentStop` — Subagent completion
+- `UserPromptSubmit` — Before processing user input (stdout added as context)
+- `Stop` — Main agent completion (supports `type: "prompt"` for LLM evaluation)
+- `SubagentStop` — Subagent completion (supports `type: "prompt"` for LLM evaluation)
 - `PreCompact` — Before context compaction
 
-**Reference:** [Claude Code hooks documentation](https://docs.claude.com/en/docs/claude-code/hooks)
+**Reference:** [Claude Code hooks documentation](https://code.claude.com/docs/en/hooks)
 
 ## Matchers Reference
 
@@ -192,6 +242,47 @@ Less commonly used:
 - `Bash` — Shell commands
 - `Python` — Python execution (if available)
 
+### MCP Tool Matching
+
+**Match MCP server tools with pattern:** `mcp__<server-name>__<tool-name>`
+
+**Examples:**
+
+```json
+"matcher": "mcp__github__search_repositories"    // Specific tool
+"matcher": "mcp__github__.*"                     // All github server tools
+"matcher": "mcp__.*__write.*"                    // Write tools from any server
+```
+
+**Example configuration:**
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__github__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/validate-github.py",
+            "timeout": 5,
+            "description": "Validate GitHub API operations"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Agent Usage:** Intercept and validate MCP tool calls before execution. Useful for:
+
+- Rate limiting API calls
+- Validating parameters before sending to external services
+- Logging external service interactions
+- Blocking dangerous operations
+
 ### No Matcher (Session Events)
 
 **Session-level events don't use matchers:**
@@ -209,13 +300,56 @@ Less commonly used:
 ### type
 
 **Type:** String
-**Value:** `"command"` (only supported type)
+**Values:** `"command"` or `"prompt"`
 
 ```json
-"type": "command"
+"type": "command"   // Execute external script
+"type": "prompt"    // LLM-evaluated hook (Stop/SubagentStop only)
 ```
 
-**Agent Action:** Always use `"command"`.
+**Agent Action:** Use `"command"` for validation scripts. Use `"prompt"` only for Stop/SubagentStop events requiring
+context-aware decisions.
+
+#### Prompt-Based Hooks (type: "prompt")
+
+**Use case:** Context-aware decisions for Stop/SubagentStop events using LLM evaluation.
+
+**Configuration:**
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Evaluate if the task is truly complete. Check that all requirements are met and tests pass.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Return format:** LLM returns JSON with decision:
+
+```json
+{
+  "decision": "approve",     // or "block"
+  "reason": "All requirements met",
+  "continue": false,         // Optional: continue execution
+  "stopReason": "Task complete"  // Optional: reason for stopping
+}
+```
+
+**Agent Usage:**
+
+- Only for Stop/SubagentStop events (context-aware decisions)
+- Uses fast LLM to evaluate conditions
+- Cannot be used for PreToolUse/PostToolUse (use `"command"` instead)
 
 ### command
 
@@ -245,26 +379,27 @@ locations.
 
 **Type:** Number
 **Unit:** Seconds
-**Maximum:** 60 seconds (enforced by Claude Code)
+**Default:** 60 seconds (configurable per hook)
 
 **Recommended values:**
 
 ```json
-"timeout": 1     // PreToolUse validation (fast checks)
-"timeout": 5     // PostToolUse processing (file operations)
-"timeout": 10    // SessionStart initialization
+"timeout": 5      // PreToolUse validation (fast checks recommended)
+"timeout": 10     // PostToolUse processing (file operations)
+"timeout": 30     // SessionStart initialization
 ```
 
 **Agent Decision Tree:**
 
 ```
 Hook type:
-├─ PreToolUse → timeout: 1 (fast validation required)
-├─ PostToolUse → timeout: 5 (file processing acceptable)
-└─ SessionStart → timeout: 10 (initialization allowed)
+├─ PreToolUse → timeout: 1-5 (fast validation recommended for responsiveness)
+├─ PostToolUse → timeout: 5-10 (file processing acceptable)
+└─ SessionStart → timeout: 10-30 (initialization allowed)
 ```
 
-**WHY short timeouts:** Hooks execute synchronously before tool execution. Long timeouts degrade agent responsiveness.
+**WHY short timeouts recommended:** Hooks execute synchronously before tool execution. Long timeouts degrade agent
+responsiveness. Use the minimum timeout needed for your validation logic.
 
 ### description
 
@@ -385,6 +520,94 @@ except Exception:
 ### Session Event Exit Codes
 
 **Exit codes ignored** (informational hooks, not blocking).
+
+## Advanced Hook Output (JSON)
+
+**For exit code 0**, hooks can optionally output structured JSON for advanced control:
+
+```json
+{
+  "continue": true,
+  "stopReason": "Optional message when stopping",
+  "suppressOutput": false,
+  "systemMessage": "Optional warning shown to Claude",
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "allow",
+    "permissionDecisionReason": "Command is safe",
+    "updatedInput": {
+      "command": "modified-command --with-flag"
+    }
+  }
+}
+```
+
+### Output Fields Reference
+
+| Field                | Type    | Purpose                            |
+|----------------------|---------|------------------------------------|
+| `continue`           | boolean | Whether to continue execution      |
+| `stopReason`         | string  | Message when stopping              |
+| `suppressOutput`     | boolean | Hide hook output from verbose mode |
+| `systemMessage`      | string  | Warning/info shown to Claude       |
+| `hookSpecificOutput` | object  | Event-specific control             |
+
+### hookSpecificOutput for PreToolUse
+
+**Key capability:** Modify tool parameters before execution with `updatedInput`.
+
+```json
+{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "allow",
+    "permissionDecisionReason": "Auto-approved safe command",
+    "updatedInput": {
+      "command": "rg pattern file.txt"
+    }
+  }
+}
+```
+
+| Field                      | Values                       | Purpose                      |
+|----------------------------|------------------------------|------------------------------|
+| `permissionDecision`       | `"allow"`, `"deny"`, `"ask"` | Override permission behavior |
+| `permissionDecisionReason` | string                       | Reason shown to user         |
+| `updatedInput`             | object                       | **Modified tool parameters** |
+
+**Example: Auto-fix legacy commands**
+
+```python
+#!/usr/bin/env python3
+import json
+import sys
+
+data = json.load(sys.stdin)
+cmd = data.get('tool_input', {}).get('command', '')
+
+# Auto-replace grep with rg
+if cmd.startswith('grep '):
+    new_cmd = cmd.replace('grep ', 'rg ', 1)
+    output = {
+        "continue": True,
+        "systemMessage": "Auto-converted grep to rg",
+        "hookSpecificOutput": {
+            "hookEventName": "PreToolUse",
+            "permissionDecision": "allow",
+            "updatedInput": {"command": new_cmd}
+        }
+    }
+    print(json.dumps(output))
+    sys.exit(0)
+
+sys.exit(0)
+```
+
+**Agent Usage:**
+
+- Use `updatedInput` to transform commands (e.g., add flags, fix paths)
+- Use `permissionDecision` to auto-approve known-safe patterns
+- Use `systemMessage` to inform Claude of modifications
 
 ## Environment Variables
 
@@ -658,7 +881,7 @@ Hook not blocking/allowing correctly?
 
 - [ ] Start with minimal single-hook configuration
 - [ ] Use `${CLAUDE_PLUGIN_ROOT}` for all script paths
-- [ ] Set appropriate timeout (1s for PreToolUse, 5s for PostToolUse)
+- [ ] Set appropriate timeout (1-5s for PreToolUse, 5-10s for PostToolUse)
 - [ ] Add clear description
 - [ ] Validate JSON syntax
 - [ ] Test hook script manually with echo/pipe
@@ -679,7 +902,7 @@ Hook not blocking/allowing correctly?
 **Configuration:**
 
 - Use `${CLAUDE_PLUGIN_ROOT}` for all script paths
-- Keep PreToolUse hooks fast (≤1 second)
+- Keep PreToolUse hooks fast (≤5 seconds recommended)
 - Provide clear, specific descriptions
 - Use forward slashes in all paths
 
@@ -701,7 +924,7 @@ Hook not blocking/allowing correctly?
 
 - Don't use absolute paths for commands
 - Don't use relative paths without `${CLAUDE_PLUGIN_ROOT}`
-- Don't set timeout too high (blocks user experience)
+- Don't set timeout too high for PreToolUse (>5s degrades responsiveness)
 - Don't skip description field
 
 **Structure:**

@@ -163,6 +163,42 @@ structure.
 - Pass connection strings as arguments (PostgreSQL, MySQL)
 - Use environment variables for secrets, not hardcoded args
 
+#### cwd (Optional)
+
+**Type:** String
+
+**Purpose:** Set working directory for MCP server process
+
+```json
+{
+  "command": "${CLAUDE_PLUGIN_ROOT}/bin/server",
+  "cwd": "${CLAUDE_PLUGIN_ROOT}"
+}
+```
+
+**Agent Usage:**
+
+- Set when server needs specific working directory
+- Supports `${CLAUDE_PLUGIN_ROOT}` for plugin-relative paths
+- Useful for servers that read config files relative to cwd
+
+**Example with cwd:**
+
+```json
+{
+  "mcpServers": {
+    "custom-server": {
+      "command": "./bin/server",
+      "args": ["--config", "config.json"],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}",
+      "env": {
+        "LOG_LEVEL": "info"
+      }
+    }
+  }
+}
+```
+
 #### env (Optional but Common)
 
 **Type:** Object (key-value pairs)

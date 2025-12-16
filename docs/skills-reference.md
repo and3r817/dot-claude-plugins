@@ -35,10 +35,7 @@ discovery.
 ---
 name: skill-name
 description: What skill does AND when to trigger (include keywords)
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
+allowed-tools: Read, Grep, Glob
 ---
 
 # Skill Name
@@ -129,11 +126,19 @@ What might user ask to trigger this skill?
 
 #### allowed-tools
 
-**Type:** Array of strings
+**Type:** Comma-separated string (official format) or array of strings
 
 **Purpose:** Restrict tools skill can use during execution
 
 **CRITICAL:** Use command-specific syntax, NOT broad permissions
+
+**Official format (comma-separated string):**
+
+```yaml
+allowed-tools: Read, Grep, Glob, Bash(gh:*), WebFetch, WebSearch
+```
+
+**Alternative format (YAML array):**
 
 ```yaml
 allowed-tools:
@@ -144,6 +149,8 @@ allowed-tools:
   - WebFetch
   - WebSearch
 ```
+
+**Note:** Both formats are accepted. Comma-separated is the official format from Claude Code documentation.
 
 **Agent Selection Guidelines:**
 
@@ -157,35 +164,19 @@ allowed-tools:
 **Research/Advisory Skills:**
 
 ```yaml
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - WebFetch
-  - WebSearch
+allowed-tools: Read, Grep, Glob, WebFetch, WebSearch
 ```
 
 **Implementation Skills:**
 
 ```yaml
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash(git:*)
-  - Bash(npm:*)
+allowed-tools: Read, Write, Edit, Bash(git:*), Bash(npm:*)
 ```
 
 **Hybrid Skills:**
 
 ```yaml
-allowed-tools:
-  - Read
-  - Grep
-  - Write
-  - Edit
-  - Bash(gh:*)
-  - WebFetch
+allowed-tools: Read, Grep, Write, Edit, Bash(gh:*), WebFetch
 ```
 
 ## Skill Directory Structure
@@ -275,12 +266,7 @@ skills/
 ---
 name: api-advisor
 description: Advisory consultation for REST API design, architecture decisions, and best practices. Use when user asks about API design, REST patterns, or API architecture.
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - WebFetch
-  - WebSearch
+allowed-tools: Read, Grep, Glob, WebFetch, WebSearch
 ---
 
 # API Design Advisor
@@ -331,12 +317,7 @@ Provide expert consultation on REST API design decisions and architectural patte
 ---
 name: deploy-automation
 description: Automated deployment workflow for staging and production environments. Use when user asks to deploy, ship to production, or automate deployments.
-allowed-tools:
-  - Read
-  - Bash(git:*)
-  - Bash(docker:*)
-  - Bash(kubectl:*)
-  - AskUserQuestion
+allowed-tools: Read, Bash(git:*), Bash(docker:*), Bash(kubectl:*), AskUserQuestion
 ---
 
 # Deployment Automation
@@ -388,11 +369,7 @@ Automate deployment process with safety checks and rollback capabilities.
 ---
 name: performance-analyzer
 description: Analyze codebase for performance bottlenecks, identify slow patterns, and suggest optimizations. Use when user asks about performance, optimization, or slow code.
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash(git:*)
+allowed-tools: Read, Grep, Glob, Bash(git:*)
 ---
 
 # Performance Analyzer

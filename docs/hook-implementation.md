@@ -30,12 +30,13 @@ User initiates tool → Claude Code intercepts (PreToolUse)
 
 **Agent Constraints:**
 
-- Timeout: 1 second maximum execution
+- Timeout: 60 seconds default (configurable per hook via `timeout` field)
 - Input: JSON from stdin, NOT command-line args
 - Output: Exit code 0/2, errors to stderr
 - Failure mode: Fail-open (exit 0 on exception for safety)
 
-**WHY 1 second timeout**: Hooks execute synchronously before every tool use. Slow hooks degrade agent responsiveness.
+**WHY short timeouts recommended**: Hooks execute synchronously before every tool use. For PreToolUse validation,
+recommend 1-5 seconds for responsiveness.
 
 **WHY fail-open**: Hook bugs must not block all tool execution. Better to allow one command than deadlock the agent.
 
@@ -416,7 +417,7 @@ sys.stderr.write("Command not allowed\n")
 
 ## Performance Constraints
 
-### Keep Hooks Fast (<1ms ideal, <100ms acceptable)
+### Keep Hooks Fast (<100ms ideal, <1s acceptable for PreToolUse)
 
 **Fast validation (prefer):**
 

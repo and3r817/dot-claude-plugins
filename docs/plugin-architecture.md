@@ -49,6 +49,10 @@ plugin-name/
 ├── commands/                # Optional user controls
 │   └── status.md            #   Slash commands for plugin management
 │
+├── agents/                  # Optional agent definitions
+│   └── agent-name.md        #   Custom agent configurations
+│                            #   Similar to commands but for agents
+│
 ├── skills/                  # Skill plugins only
 │   └── skill-name/          #   Auto-discovered subdirectories
 │       └── SKILL.md         #   REQUIRED skill definition
