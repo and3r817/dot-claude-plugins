@@ -1,16 +1,7 @@
 ---
 name: android-kotlin-coroutines
 description: Android development with Kotlin Coroutines and Flow. This skill should be used when implementing asynchronous programming in Android, managing concurrent operations, handling structured concurrency, using Flow for reactive streams, integrating coroutines with Retrofit/Room/WorkManager, or writing coroutine-based tests. Triggers on Android concurrency, async, coroutine, or Flow development tasks.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
-  - Bash(./gradlew:*)
-  - Bash(adb:*)
-  - WebSearch
-  - WebFetch
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash(./gradlew:*), Bash(adb:*), WebSearch, WebFetch
 ---
 
 # Android Kotlin Coroutines
