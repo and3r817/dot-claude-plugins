@@ -1,6 +1,7 @@
 # GitHub CLI Complete Command Reference
 
-This reference provides a comprehensive catalog of all `gh` commands organized by category. Use this for detailed command exploration and discovering available functionality.
+This reference provides a comprehensive catalog of all `gh` commands organized by category. Use this for detailed
+command exploration and discovering available functionality.
 
 ## Authentication & Configuration
 
@@ -17,6 +18,7 @@ gh auth setup-git                # Configure git to use gh for auth
 ```
 
 **Common flags:**
+
 - `--hostname` - GitHub instance (default: github.com)
 - `--web` - Open browser for authentication
 
@@ -30,6 +32,7 @@ gh config clear-cache            # Clear CLI cache
 ```
 
 **Common keys:**
+
 - `editor` - Default text editor
 - `pager` - Output pager program
 - `git_protocol` - Git protocol (https/ssh)
@@ -45,6 +48,7 @@ gh alias import <file>           # Import aliases from file
 ```
 
 **Examples:**
+
 ```bash
 gh alias set prd "pr create --draft"
 gh alias set bugs "issue list --label bug"
@@ -80,6 +84,7 @@ gh repo set-default [<repo>]     # Set default repository
 ```
 
 **Subcommands:**
+
 ```bash
 gh repo autolink list            # List autolink references
 gh repo autolink delete <id>     # Delete autolink (⚠️ Write)
@@ -153,6 +158,7 @@ gh pr update-branch [<number>]   # Update PR branch (⚠️ Write)
 ```
 
 **Common flags:**
+
 - `--json <fields>` - Output as JSON
 - `--jq <expression>` - Filter JSON output
 - `--template <string>` - Format with Go template
@@ -381,6 +387,7 @@ gh search repos --stars ">1000" --language go
 ```
 
 **Common search qualifiers:**
+
 - `is:{issue|pr|open|closed|merged}`
 - `author:<username>`, `@me`
 - `assignee:<username>`
@@ -469,6 +476,7 @@ gh secret delete <name>         # Delete secret (⚠️ Write)
 ```
 
 **Scopes:**
+
 - `-o`, `--org` - Organization secrets
 - `-e`, `--env` - Environment secrets
 - `-u`, `--user` - User secrets (codespaces)

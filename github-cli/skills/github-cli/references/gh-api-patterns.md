@@ -1,6 +1,7 @@
 # GitHub CLI API Patterns Reference
 
-Comprehensive guide to using `gh api` for REST and GraphQL API access, including authentication, pagination, caching, and advanced patterns.
+Comprehensive guide to using `gh api` for REST and GraphQL API access, including authentication, pagination, caching,
+and advanced patterns.
 
 ## Table of Contents
 
@@ -152,6 +153,7 @@ gh api graphql --paginate -f query='
 ```
 
 **Requirements for pagination:**
+
 - Query must accept `$endCursor` variable
 - Query must fetch `pageInfo { hasNextPage, endCursor }` fields
 

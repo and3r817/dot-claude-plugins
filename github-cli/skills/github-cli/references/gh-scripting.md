@@ -1,6 +1,7 @@
 # GitHub CLI Scripting & Automation Patterns
 
-Comprehensive guide to automating GitHub workflows with gh CLI, including shell scripting patterns, CI/CD integration, and advanced automation techniques.
+Comprehensive guide to automating GitHub workflows with gh CLI, including shell scripting patterns, CI/CD integration,
+and advanced automation techniques.
 
 ## Table of Contents
 
