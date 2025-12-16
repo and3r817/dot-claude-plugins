@@ -1,16 +1,7 @@
 ---
 name: android-kotlin-compose
 description: Android development with Kotlin and Jetpack Compose. This skill should be used when building Android UI with Compose, implementing MVVM architecture, managing state in Compose, integrating Jetpack libraries (Navigation, Room, Hilt, ViewModel), or following Material3 design patterns. Triggers on Android/Compose/Kotlin development tasks.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Grep
-  - Glob
-  - Bash(./gradlew:*)
-  - Bash(adb:*)
-  - WebSearch
-  - WebFetch
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash(./gradlew:*), Bash(adb:*), WebSearch, WebFetch
 ---
 
 # Android Kotlin Compose
@@ -68,43 +59,6 @@ app/src/main/java/com/example/app/
 │           ├── FeatureScreen.kt
 │           └── FeatureViewModel.kt
 └── App.kt                  # Application class
-```
-
-### Essential Dependencies
-
-```kotlin
-// build.gradle.kts (app)
-dependencies {
-    // Compose BOM - manages all Compose versions
-    val composeBom = platform("androidx.compose:compose-bom:2024.02.00")
-    implementation(composeBom)
-
-    // Compose UI
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.activity:activity-compose:1.8.2")
-
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.50")
-    kapt("com.google.dagger:hilt-compiler:2.50")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-
-    // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-
-    // Debug
-    debugImplementation("androidx.compose.ui:ui-tooling")
-}
 ```
 
 ## UI Development Patterns

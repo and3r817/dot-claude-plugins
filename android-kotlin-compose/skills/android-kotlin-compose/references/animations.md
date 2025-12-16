@@ -988,7 +988,7 @@ fun AnimatedLazyList(items: List<Item>) {
 
 ```kotlin
 dependencies {
-    implementation("com.airbnb.android:lottie-compose:6.3.0")
+    implementation("com.airbnb.android:lottie-compose")
 }
 
 @Composable
