@@ -1,6 +1,6 @@
 {
   "name": "android-analysis",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Android APK, AAR, and JAR decompilation and inspection toolkit for analyzing compiled binaries, unpacking libraries, and understanding obfuscated code",
   "author": {
     "name": "and3r817",
