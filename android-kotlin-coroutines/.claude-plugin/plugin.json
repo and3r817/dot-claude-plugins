@@ -1,6 +1,6 @@
 {
   "name": "android-kotlin-coroutines",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Android development guidance with Kotlin Coroutines and Flow. Structured concurrency, StateFlow/SharedFlow patterns, lifecycle integration, testing with Turbine, and library integrations (Retrofit, Room, WorkManager).",
   "author": {
     "name": "and3r817",
