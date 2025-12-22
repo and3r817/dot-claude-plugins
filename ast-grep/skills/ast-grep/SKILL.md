@@ -1,6 +1,6 @@
 ---
 name: ast-grep
-description: Structural code search and rewriting using AST patterns. Use when users need to search codebases using Abstract Syntax Tree patterns, find specific code structures, perform complex queries beyond text search, or rewrite code at scale. Triggers on requests for pattern matching, code analysis, linting rules, or automated refactoring.
+description: Structural code search and rewriting using AST patterns. Use when user mentions "ast-grep", "sg", or needs to search codebases using Abstract Syntax Tree patterns, find specific code structures, perform complex queries beyond text search, or rewrite code at scale. Triggers on requests for pattern matching, code analysis, linting rules, or automated refactoring.
 allowed-tools: Read, Write, Grep, Glob, Bash(ast-grep:*), Bash(sg:*), WebSearch, WebFetch
 ---
 

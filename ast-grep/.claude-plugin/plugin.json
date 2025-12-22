@@ -1,6 +1,6 @@
 {
   "name": "ast-grep",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Structural code search using AST patterns. Translates natural language queries into ast-grep rules for precise code matching beyond text search.",
   "author": {
     "name": "and3r817",
