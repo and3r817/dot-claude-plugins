@@ -1,6 +1,6 @@
 ---
 name: android-kotlin-compose
-description: Android development with Kotlin and Jetpack Compose. This skill should be used when building Android UI with Compose, implementing MVVM architecture, managing state in Compose, integrating Jetpack libraries (Navigation, Room, Hilt, ViewModel), or following Material3 design patterns. Triggers on Android/Compose/Kotlin development tasks.
+description: Android development with Kotlin and Jetpack Compose. Use when user mentions "Compose", "Jetpack Compose", "Material3", "Hilt", "Room", "ViewModel", or needs to build Android UI, implement MVVM architecture, manage Compose state, or integrate Jetpack libraries (Navigation, Room, Hilt, ViewModel). Triggers on Android/Compose/Kotlin development tasks.
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash(./gradlew:*), Bash(adb:*), WebSearch, WebFetch
 ---
 
