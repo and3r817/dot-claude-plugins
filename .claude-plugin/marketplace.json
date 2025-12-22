@@ -13,7 +13,19 @@
       "name": "github-cli",
       "source": "./github-cli",
       "description": "GitHub CLI (gh) companion: security guard blocking write operations + comprehensive usage skill for automation, API access, and workflows",
-      "tags": ["github", "gh", "cli", "security", "automation", "api", "workflow", "skill"]
+      "tags": [
+        "github",
+        "gh",
+        "cli",
+        "security",
+        "automation",
+        "api",
+        "workflow",
+        "skill"
+      ],
+      "skills": [
+        "./skills/github-cli"
+      ]
     },
     {
       "name": "modern-cli-enforcer",
@@ -45,6 +57,9 @@
         "design",
         "codex",
         "skill"
+      ],
+      "skills": [
+        "./skills/codex-advisor"
       ]
     },
     {
@@ -62,6 +77,9 @@
         "mobile",
         "skill",
         "commands"
+      ],
+      "skills": [
+        "./skills/android-analysis"
       ]
     },
     {
@@ -75,6 +93,9 @@
         "pattern-matching",
         "refactoring",
         "skill"
+      ],
+      "skills": [
+        "./skills/ast-grep"
       ]
     },
     {
@@ -91,6 +112,9 @@
         "room",
         "navigation",
         "skill"
+      ],
+      "skills": [
+        "./skills/android-kotlin-compose"
       ]
     },
     {
@@ -108,6 +132,9 @@
         "testing",
         "turbine",
         "skill"
+      ],
+      "skills": [
+        "./skills/android-kotlin-coroutines"
       ]
     }
   ]
